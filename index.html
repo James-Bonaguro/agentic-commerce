@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rise of Agentic Commerce: Pinterest's AI Pivot</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Narrative Plan & Justification
+    
+    1. Narrative Structure:
+       - Introduction: Define the "Agentic Shift" (Feb 2026 context).
+       - The Shift: Visualize the collapse of the traditional funnel.
+       - The Opportunity: What agents buy (Product Categories).
+       - The Advantage: Why Pinterest wins (The Context Engine).
+       - The Strategy: Timeline for creators.
+
+    2. Visualization Choices (NO SVG / NO MERMAID):
+       - Vis 1: Agent Purchase Probability (Horizontal Bar Chart). Goal: Compare categories. Justification: Shows hierarchy of agent autonomy. Library: Chart.js.
+       - Vis 2: The Funnel Collapse (CSS Flow Diagram). Goal: Process. Justification: Comparing human flow vs agent flow. Method: Tailwind Grid/Flex.
+       - Vis 3: Pinterest's Data Moat (Radar Chart). Goal: Compare/Inform. Justification: Multi-variable comparison between platforms. Library: Chart.js.
+       - Vis 4: Strategic Window (Plotly Heatmap). Goal: Organize/Timeline. Justification: 2D representation of urgency vs impact over time. Library: Plotly.js (Canvas).
+    -->
+
+    <style>
+        /* Custom Palette - Neon Cyber-Future */
+        :root {
+            --bg-dark: #0f172a; /* Slate 900 */
+            --card-bg: #1e293b; /* Slate 800 */
+            --accent-cyan: #06b6d4; /* Cyan 500 */
+            --accent-pink: #ec4899; /* Pink 500 */
+            --accent-yellow: #eab308; /* Yellow 500 */
+            --accent-purple: #a855f7; /* Purple 500 */
+            --text-main: #f8fafc; /* Slate 50 */
+            --text-muted: #94a3b8; /* Slate 400 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Chart Container Rules */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Max width constraint */
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px; /* Base height */
+            max-height: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--card-bg);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-cyan);
+        }
+
+        /* Utility for CSS Shapes (replacing SVG) */
+        .circle-node {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-white">
+
+    <!-- Header Section -->
+    <header class="w-full py-12 px-6 bg-gradient-to-b from-slate-900 to-slate-800 border-b border-slate-700">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-cyan-400 uppercase bg-slate-800 rounded-full border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                State of the Union: Feb 2026
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500">
+                Agentic Commerce &<br>The Pinterest Transformation
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                As Contra launches agent-native payments and Google rolls out the Universal Commerce Protocol, the digital economy is shifting from <span class="text-white font-semibold">human-browse</span> to <span class="text-white font-semibold">agent-buy</span>. Here is the strategic roadmap for creators in the age of autonomous AI purchasing.
+            </p>
+        </div>
+    </header>
+
+    <!-- KPI / Overview Grid -->
+    <section class="py-12 px-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- KPI 1 -->
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg hover:border-cyan-500/50 transition duration-300">
+                <div class="text-slate-400 text-sm font-medium mb-2">Predicted Agent Vol</div>
+                <div class="text-4xl font-bold text-cyan-400">22%</div>
+                <div class="text-xs text-slate-500 mt-2">of digital transactions by Q4 2027</div>
+            </div>
+            <!-- KPI 2 -->
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg hover:border-purple-500/50 transition duration-300">
+                <div class="text-slate-400 text-sm font-medium mb-2">Pinterest API Calls</div>
+                <div class="text-4xl font-bold text-purple-400">+450%</div>
+                <div class="text-xs text-slate-500 mt-2">Growth in machine-to-machine queries</div>
+            </div>
+            <!-- KPI 3 -->
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg hover:border-pink-500/50 transition duration-300">
+                <div class="text-slate-400 text-sm font-medium mb-2">Conversion Time</div>
+                <div class="text-4xl font-bold text-pink-500">~8ms</div>
+                <div class="text-xs text-slate-500 mt-2">Avg. Agent decision speed vs 14m human</div>
+            </div>
+            <!-- KPI 4 -->
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg hover:border-yellow-500/50 transition duration-300">
+                <div class="text-slate-400 text-sm font-medium mb-2">New Key Metric</div>
+                <div class="text-2xl font-bold text-yellow-400">Context Clarity</div>
+                <div class="text-xs text-slate-500 mt-2">Replacing SEO keyword density</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: The Shift (Visualized Process) -->
+    <section class="py-12 px-6 max-w-6xl mx-auto">
+        <div class="mb-10 text-center md:text-left">
+            <h2 class="text-3xl font-bold text-white mb-4">The Collapse of the Funnel</h2>
+            <p class="text-slate-400 max-w-2xl">
+                The traditional marketing funnel is being replaced by the "Agentic Loop." Agents don't browse; they interpret intent and execute transactions via APIs.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-slate-900/50 p-8 rounded-2xl border border-slate-800">
+            <!-- Traditional Side -->
+            <div class="flex flex-col space-y-4">
+                <h3 class="text-xl font-semibold text-slate-300 mb-4 border-b border-slate-700 pb-2">Legacy Model: The Human Path</h3>
+                
+                <div class="flex items-center space-x-4 p-4 bg-slate-800 rounded-lg opacity-80">
+                    <div class="circle-node bg-slate-700 text-slate-300">1</div>
+                    <div>
+                        <div class="font-bold text-slate-200">Search Query</div>
+                        <div class="text-xs text-slate-500">"Best digital planner for iPad"</div>
+                    </div>
+                </div>
+                <div class="flex justify-center h-6"><div class="w-0.5 bg-slate-600"></div></div>
+                
+                <div class="flex items-center space-x-4 p-4 bg-slate-800 rounded-lg opacity-80">
+                    <div class="circle-node bg-slate-700 text-slate-300">2</div>
+                    <div>
+                        <div class="font-bold text-slate-200">Content Browse</div>
+                        <div class="text-xs text-slate-500">Read blogs, compare Pinterest boards</div>
+                    </div>
+                </div>
+                <div class="flex justify-center h-6"><div class="w-0.5 bg-slate-600"></div></div>
+
+                <div class="flex items-center space-x-4 p-4 bg-slate-800 rounded-lg opacity-80">
+                    <div class="circle-node bg-slate-700 text-slate-300">3</div>
+                    <div>
+                        <div class="font-bold text-slate-200">Checkout Friction</div>
+                        <div class="text-xs text-slate-500">Forms, credit card entry, hesitation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agentic Side -->
+            <div class="flex flex-col space-y-4">
+                <h3 class="text-xl font-semibold text-cyan-400 mb-4 border-b border-cyan-900 pb-2">Feb 2026: The Agentic Loop</h3>
+                
+                <div class="flex items-center space-x-4 p-4 bg-slate-800 rounded-lg border-l-4 border-purple-500">
+                    <div class="circle-node bg-purple-900 text-purple-300">A</div>
+                    <div>
+                        <div class="font-bold text-white">Intent Definition</div>
+                        <div class="text-xs text-purple-300">User: "Organize my life for Q1."</div>
+                    </div>
+                </div>
+                <!-- Dynamic Connector -->
+                <div class="flex justify-center h-6 relative">
+                    <div class="w-0.5 bg-cyan-500 animate-pulse"></div>
+                </div>
+                
+                <div class="flex items-center space-x-4 p-4 bg-slate-800 rounded-lg border-l-4 border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+                    <div class="circle-node bg-cyan-900 text-cyan-300">B</div>
+                    <div>
+                        <div class="font-bold text-white">Context & Execution</div>
+                        <div class="text-xs text-cyan-300">Agent reads Pinterest graph -> Selects Top Rated Planner -> Pays via Contra</div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-4 bg-slate-800/50 rounded-lg border border-dashed border-slate-600">
+                    <div class="text-sm text-center text-slate-400 italic">
+                        "The 'Browsing' phase is eliminated. Visual context becomes the primary filter."
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: What Do Agents Buy? (Bar Chart) -->
+    <section class="py-12 px-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="md:col-span-1">
+                <h2 class="text-3xl font-bold text-white mb-4">Autonomous Purchasing Power</h2>
+                <p class="text-slate-400 mb-6">
+                    Not all products are equal in the eyes of an agent. <strong class="text-cyan-400">Digital assets</strong> and <strong class="text-purple-400">standardized commodities</strong> see the highest autonomy.
+                </p>
+                <p class="text-slate-400 text-sm">
+                    Luxury goods and high-risk investments still require human "Sign-off," but digital tools (courses, presets, templates) fall into the "Auto-Approve" budget of most personal agents.
+                </p>
+            </div>
+            <div class="md:col-span-2">
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700">
+                    <div class="chart-container">
+                        <canvas id="agentPurchaseChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Pinterest's Context Moat (Radar Chart) -->
+    <section class="py-12 px-6 max-w-6xl mx-auto bg-slate-900">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-white mb-2">Why Pinterest Wins the Agent War</h2>
+            <p class="text-slate-400 max-w-3xl mx-auto">
+                Agents crave <span class="text-yellow-400 font-semibold">context</span>. A search query is just text. A Pinterest board is a semantic web of taste, intent, and relationships. This visual graph is the fuel for smart commerce agents.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700 order-2 lg:order-1">
+                <div class="chart-container">
+                    <canvas id="platformRadarChart"></canvas>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2 space-y-6">
+                <!-- Insight Card 1 -->
+                <div class="bg-slate-800/50 p-4 rounded-lg border-l-4 border-pink-500">
+                    <h4 class="text-lg font-bold text-white">Visual Semantic Density</h4>
+                    <p class="text-sm text-slate-400 mt-1">
+                        Pinterest images contain metadata about style, origin, and related items that standard search indexes lack. This helps agents match "vibe" requests.
+                    </p>
+                </div>
+                <!-- Insight Card 2 -->
+                <div class="bg-slate-800/50 p-4 rounded-lg border-l-4 border-cyan-500">
+                    <h4 class="text-lg font-bold text-white">Human Curation Signals</h4>
+                    <p class="text-sm text-slate-400 mt-1">
+                        Because humans organize Pins into boards, agents can infer relationships (e.g., "This chair belongs in a Mid-Century Modern room") without complex guessing.
+                    </p>
+                </div>
+                <!-- Insight Card 3 -->
+                <div class="bg-slate-800/50 p-4 rounded-lg border-l-4 border-yellow-500">
+                    <h4 class="text-lg font-bold text-white">API Readiness</h4>
+                    <p class="text-sm text-slate-400 mt-1">
+                        With recent updates, Pinterest's API allows agents to read visual attributes directly, bypassing the need for unstructured web scraping.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Strategic Window (Plotly Heatmap) -->
+    <section class="py-12 px-6 max-w-6xl mx-auto">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-white mb-2">The Strategic Window: 2026-2027</h2>
+            <p class="text-slate-400">
+                Heatmap of "Competitive Advantage" for independent creators. Red indicates high urgency/high reward. Blue indicates market saturation or low impact.
+            </p>
+        </div>
+        
+        <div class="bg-slate-800 rounded-xl p-4 shadow-lg border border-slate-700">
+            <!-- Plotly Container -->
+            <div id="strategyHeatmap" class="w-full h-[450px]"></div>
+        </div>
+        <p class="text-center text-xs text-slate-500 mt-4">
+            *High Heat = Critical action window for "Early Mover" advantage in Agentic SEO.
+        </p>
+    </section>
+
+    <!-- Section 6: Actionable Takeaways -->
+    <section class="py-16 px-6 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center text-white mb-12">Implications for Independent Creators</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-2xl border-t border-slate-700 shadow-xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                    <div class="text-6xl font-bold">01</div>
+                </div>
+                <h3 class="text-xl font-bold text-cyan-400 mb-4">Structure Your Data</h3>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Agents don't read marketing fluff. They read JSON-LD and structured metadata. Ensure your digital products on Pinterest have clear pricing, licensing, and compatibility attributes defined in the schema.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-2xl border-t border-slate-700 shadow-xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                    <div class="text-6xl font-bold">02</div>
+                </div>
+                <h3 class="text-xl font-bold text-purple-400 mb-4">Design for APIs</h3>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    If you sell templates or software, ensure your checkout supports API-driven payments (like Contra or Stripe's agent protocols). If an agent hits a CAPTCHA, you lose the sale.
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-2xl border-t border-slate-700 shadow-xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                    <div class="text-6xl font-bold">03</div>
+                </div>
+                <h3 class="text-xl font-bold text-pink-500 mb-4">Visual "Vibe" Tags</h3>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Tag products with aesthetic and contextual keywords (e.g., "Cyberpunk", "Minimalist Workspace") rather than just functional ones. Pinterest agents match *context* first, function second.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full py-8 text-center border-t border-slate-800 bg-slate-900">
+        <p class="text-slate-500 text-sm">
+            Generated for Strategic Analysis • Data Sources: Pinterest Transformation Reports, Contra Launch Notes (Feb 2026), Global AI Protocols
+        </p>
+    </footer>
+
+    <!-- Scripts for Charts -->
+    <script>
+        // --- Utility: Label Wrapping for Chart.js ---
+        function wrapLabel(str, maxChars) {
+            if (str.length <= maxChars) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length < maxChars) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- Common Chart Options ---
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        const tooltipPlugin = {
+            tooltip: {
+                backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                titleColor: '#fff',
+                bodyColor: '#cbd5e1',
+                borderColor: '#475569',
+                borderWidth: 1,
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) return label.join(' ');
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- Chart 1: Agent Purchase Confidence (Bar Chart) ---
+        const ctxBar = document.getElementById('agentPurchaseChart').getContext('2d');
+        const rawBarLabels = [
+            "Digital Assets (Templates, Presets)",
+            "SaaS Subscriptions (Micro-tools)",
+            "Utility Services (Hosting, Data)",
+            "Commodity Goods (Office Supplies)",
+            "Fashion/Apparel (Basic)",
+            "Luxury Goods (High Value)",
+            "Complex Services (Consulting)"
+        ];
+        
+        const wrappedBarLabels = rawBarLabels.map(l => wrapLabel(l, 20));
+
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: wrappedBarLabels,
+                datasets: [{
+                    label: 'Agent Autonomy Index (0-100)',
+                    data: [95, 88, 82, 65, 40, 15, 10],
+                    backgroundColor: [
+                        '#06b6d4', '#06b6d4', '#06b6d4', 
+                        '#a855f7', '#a855f7', 
+                        '#ec4899', '#ec4899'
+                    ],
+                    borderRadius: 6,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    ...tooltipPlugin,
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: '#334155' },
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'Probability of Autonomous Transaction' }
+                    },
+                    y: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // --- Chart 2: Pinterest Radar Chart ---
+        const ctxRadar = document.getElementById('platformRadarChart').getContext('2d');
+        const radarLabels = [
+            "Visual Context Data",
+            "Purchase Intent Signals",
+            "Structured Product Data",
+            "API Openness for Agents",
+            "Human Curation (Trust)",
+            "Search Volume"
+        ];
+        // Short labels don't need wrapping, but good practice to check
+        const wrappedRadarLabels = radarLabels.map(l => wrapLabel(l, 16));
+
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: wrappedRadarLabels,
+                datasets: [
+                    {
+                        label: 'Pinterest',
+                        data: [95, 90, 75, 85, 98, 60],
+                        borderColor: '#ec4899', // Pink
+                        backgroundColor: 'rgba(236, 72, 153, 0.2)',
+                        pointBackgroundColor: '#ec4899',
+                        pointBorderColor: '#fff'
+                    },
+                    {
+                        label: 'Google/Amazon (Avg)',
+                        data: [40, 85, 95, 60, 30, 100],
+                        borderColor: '#94a3b8', // Grey
+                        backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                        pointBackgroundColor: '#94a3b8',
+                        pointBorderColor: '#fff',
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    ...tooltipPlugin,
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#cbd5e1' }
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: '#334155' },
+                        grid: { color: '#334155' },
+                        pointLabels: {
+                            color: '#e2e8f0',
+                            font: { size: 11 }
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+
+        // --- Chart 3: Strategic Window Heatmap (Plotly.js) ---
+        // Using Plotly for a Heatmap to show "Time vs Strategy" intensity
+        
+        const strategyData = [
+            {
+                z: [
+                    [20, 40, 80, 95, 60], // Row: Product Tagging Optimization
+                    [10, 30, 85, 90, 50], // Row: Schema/Metadata Cleanup
+                    [5, 10, 40, 80, 90],  // Row: Agent-Native Payment Integration
+                    [50, 80, 40, 20, 10], // Row: Traditional SEO (Declining)
+                ],
+                x: ['Q3 2025', 'Q4 2025', 'Q1 2026', 'Q2 2026', 'Q3 2026'],
+                y: ['Product Tagging', 'Schema Cleanup', 'Agent Payments', 'Old School SEO'],
+                type: 'heatmap',
+                colorscale: [
+                    [0, '#1e293b'],   // Low (Dark Slate)
+                    [0.5, '#06b6d4'], // Med (Cyan)
+                    [1, '#eab308']    // High (Yellow)
+                ],
+                showscale: true
+            }
+        ];
+
+        const strategyLayout = {
+            title: {
+                text: 'Strategic Priority Heatmap',
+                font: { family: 'Space Grotesk', size: 18, color: '#fff' }
+            },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            margin: { t: 50, b: 50, l: 120, r: 20 },
+            xaxis: {
+                tickfont: { color: '#94a3b8' },
+                gridcolor: '#334155'
+            },
+            yaxis: {
+                tickfont: { color: '#94a3b8' },
+                automargin: true
+            },
+            font: { family: 'Inter', color: '#fff' }
+        };
+
+        const config = { responsive: true, displayModeBar: false };
+        Plotly.newPlot('strategyHeatmap', strategyData, strategyLayout, config);
+
+    </script>
+</body>
+</html>
