@@ -220,6 +220,15 @@ td.q{color:var(--ink-3);font-size:14px;}
 }
 
 /* ============================================================
+   MONETIZATION
+   ============================================================ */
+.path ul{margin:0;padding-left:18px;}
+.path li{font-family:var(--f-ui);font-size:14.5px;line-height:1.42;color:var(--ink);margin-bottom:12px;}
+.path li:last-child{margin-bottom:0;}
+.rungs.four{grid-template-columns:repeat(4,1fr);}
+#money .ladder{margin:30px 0 26px;}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 footer{border-top:1.5px solid var(--ink);padding:34px 0 60px;font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2);}
@@ -236,7 +245,7 @@ footer li b{color:var(--ink);font-weight:600;}
   .wrap{padding:0 20px;}
   nav ul{padding:0 20px;gap:18px;}
   .triad{grid-template-columns:1fr;}
-  .rungs{grid-template-columns:1fr;}
+  .rungs,.rungs.four{grid-template-columns:1fr;}
   .rung .flag{position:static;transform:none;display:block;}
   .rungs-foot{display:none;}
   .paths{grid-template-columns:1fr;}
@@ -265,13 +274,14 @@ footer li b{color:var(--ink);font-weight:600;}
 
 <nav aria-label="Sections">
   <ul>
-    <li><a href="#curve">The curve</a></li>
-    <li><a href="#today">Where we are today</a></li>
-    <li><a href="#metrics">Core metrics</a></li>
-    <li><a href="#forecasts">Independent forecasts</a></li>
     <li><a href="#ladder">The behavior ladder</a></li>
     <li><a href="#path">What changes structurally</a></li>
+    <li><a href="#today">Where we are today</a></li>
+    <li><a href="#curve">The curve</a></li>
+    <li><a href="#metrics">Core metrics</a></li>
+    <li><a href="#forecasts">Independent forecasts</a></li>
     <li><a href="#scenarios">2036 scenarios</a></li>
+    <li><a href="#money">How this gets monetized</a></li>
   </ul>
 </nav>
 
@@ -288,66 +298,6 @@ footer li b{color:var(--ink);font-weight:600;}
 </div>
 
 <main class="wrap">
-
-  <!-- ===================== HERO CURVE ===================== -->
-  <section id="curve">
-    <div class="sec-head">
-      <h2>Ten years of transaction value</h2>
-      <span class="note">Logarithmic scale. Each gridline is 10&times; the one below it.</span>
-    </div>
-    <div class="curve-panel">
-      <div id="curve-svg"></div>
-      <div class="legend">
-        <span><i class="key"></i>Base case</span>
-        <span><i class="key band"></i>Range across published forecasts</span>
-        <span><i class="key brass"></i>Extrapolated beyond published forecasts</span>
-        <span><i class="key dot"></i>Broadest definition of the market</span>
-      </div>
-      <div class="attr-line" id="curve-attr"></div>
-    </div>
-    <div class="triad" id="triad"></div>
-  </section>
-
-  <!-- ===================== TODAY ===================== -->
-  <section id="today">
-    <div class="sec-head">
-      <h2>Where we are today</h2>
-      <span class="note">Share of global e-commerce</span>
-    </div>
-    <p class="lede">The entire market above currently runs through two fifths of one percent of transactions. The curve is not a story about a large market getting larger. It is a story about a market that has barely started.</p>
-    <div class="pen" id="pen"></div>
-  </section>
-
-  <!-- ===================== METRICS ===================== -->
-  <section id="metrics">
-    <div class="sec-head">
-      <h2>Core metrics</h2>
-      <span class="note">2026 actual and near-term against 2030&ndash;31 forecast</span>
-    </div>
-    <table id="metrics-table">
-      <caption>Compound annual growth rate calculated across the stated forecast window.</caption>
-      <thead>
-        <tr>
-          <th style="width:25%">Metric</th>
-          <th class="num" style="width:15%">2026</th>
-          <th class="num" style="width:19%">2030&ndash;31</th>
-          <th class="num" style="width:18%">Implied growth</th>
-          <th style="width:23%">Source</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
-  <!-- ===================== FORECASTS ===================== -->
-  <section id="forecasts">
-    <div class="sec-head">
-      <h2>Five independent forecasts</h2>
-      <span class="note">Annual value flowing through agents by 2030&ndash;31</span>
-    </div>
-    <p class="lede">Four separate research groups, working independently and with different definitions, land in the same $3&ndash;5 trillion band. The fifth uses a broader definition of what counts and sits well above it.</p>
-    <div class="fc" id="fc"></div>
-  </section>
 
   <!-- ===================== LADDER ===================== -->
   <section id="ladder">
@@ -386,6 +336,66 @@ footer li b{color:var(--ink);font-weight:600;}
     </div>
   </section>
 
+  <!-- ===================== TODAY ===================== -->
+  <section id="today">
+    <div class="sec-head">
+      <h2>Where we are today</h2>
+      <span class="note">Share of global e-commerce</span>
+    </div>
+    <p class="lede">All of this currently runs through two fifths of one percent of transactions. The curve on the next screen is not a story about a large market getting larger. It is a story about a market that has barely started.</p>
+    <div class="pen" id="pen"></div>
+  </section>
+
+  <!-- ===================== HERO CURVE ===================== -->
+  <section id="curve">
+    <div class="sec-head">
+      <h2>Ten years of transaction value</h2>
+      <span class="note">Logarithmic scale. Each gridline is 10&times; the one below it.</span>
+    </div>
+    <div class="curve-panel">
+      <div id="curve-svg"></div>
+      <div class="legend">
+        <span><i class="key"></i>Base case</span>
+        <span><i class="key band"></i>Range across published forecasts</span>
+        <span><i class="key brass"></i>Extrapolated beyond published forecasts</span>
+        <span><i class="key dot"></i>Broadest definition of the market</span>
+      </div>
+      <div class="attr-line" id="curve-attr"></div>
+    </div>
+    <div class="triad" id="triad"></div>
+  </section>
+
+  <!-- ===================== METRICS ===================== -->
+  <section id="metrics">
+    <div class="sec-head">
+      <h2>Core metrics</h2>
+      <span class="note">2026 actual and near-term against 2030&ndash;31 forecast</span>
+    </div>
+    <table id="metrics-table">
+      <caption>Compound annual growth rate calculated across the stated forecast window.</caption>
+      <thead>
+        <tr>
+          <th style="width:25%">Metric</th>
+          <th class="num" style="width:15%">2026</th>
+          <th class="num" style="width:19%">2030&ndash;31</th>
+          <th class="num" style="width:18%">Implied growth</th>
+          <th style="width:23%">Source</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- ===================== FORECASTS ===================== -->
+  <section id="forecasts">
+    <div class="sec-head">
+      <h2>Five independent forecasts</h2>
+      <span class="note">Annual value flowing through agents by 2030&ndash;31</span>
+    </div>
+    <p class="lede">Four separate research groups, working independently and with different definitions, land in the same $3&ndash;5 trillion band. The fifth uses a broader definition of what counts and sits well above it.</p>
+    <div class="fc" id="fc"></div>
+  </section>
+
   <!-- ===================== SCENARIOS ===================== -->
   <section id="scenarios">
     <div class="sec-head">
@@ -407,6 +417,8 @@ footer li b{color:var(--ink);font-weight:600;}
     </table>
   </section>
 
+  <!-- ===================== MONETIZATION ===================== -->
+  <section id="money"></section>
 </main>
 
 <footer>
@@ -525,6 +537,39 @@ const D = {
   scenBase: 3500,
   scenBasis: "Applied to Juniper Research 2031",
   scenarios:[15,20,25,30],
+
+  /* ---- Monetization ---------------------------------------------- */
+  money:{
+    head:"How this gets monetized",
+    note:"Where money changes hands in this",
+    lede:"For twenty-five years there has been a job called making sure Google can find you and rank you above the other guy. It built a whole industry: SEO, web design, local listings, review management. That job does not disappear. It changes readers. The thing being optimized for stops being a person scanning ten blue links and becomes a machine reading structured data and building a shortlist. Every business that has ever paid someone to be findable on Google eventually needs someone to make it findable, comparable and buyable by an agent. Same industry, different customer on the other end.",
+    columns:[
+      { cap:"What the work is", items:[
+        "<b>Make a business legible.</b> Clean, structured data on what it sells, what it costs, what is in stock, how fast it ships, where it serves. An agent that has to guess moves on to one that does not make it guess.",
+        "<b>Make it comparable.</b> The attributes an agent filters on before a human sees anything: lead time, warranty, certifications, minimum order, capacity, service window.",
+        "<b>Make it buyable.</b> A way for an agent to pull a real quote, place an order or book a slot without a phone call.",
+        "<b>Make it trusted.</b> Verified identity, credentials and reviews in a form a machine can actually check.",
+        "<b>Keep watching it.</b> Which agents recommend the business, which recommend a competitor, and whether what they say about it is even accurate."
+      ] },
+      { cap:"How the work gets paid for", items:[
+        "A one-time project to audit and fix the data, priced as a fixed fee.",
+        "A monthly fee to keep the data current and keep watching what the agents say. Structurally the same arrangement as an SEO retainer, paid out of the same budget.",
+        "Sometimes a cut tied to inquiries or orders that arrive through agents.",
+        "The same approach applied across many businesses in the same industry. The first one is slow. The tenth is a repeat of the first."
+      ] }
+    ],
+    steps:{
+      title:"How anyone knows it worked",
+      k:"Four steps, in order",
+      list:[
+        "Take a baseline first. Run the real questions a customer would ask through the major assistants and record whether the business shows up at all, where it lands, and what gets said about it. That is the before picture, and it is a screenshot.",
+        "Re-run the same questions on a schedule. Track how often it appears, where it places, and whether the description is accurate.",
+        "Tag what comes in. Referrals from assistants carry identifiable sources, and agent-driven requests arrive through the endpoints built for them, so that channel can be separated from everything else.",
+        "Report the number the owner already cares about. Quote requests, orders, booked jobs, average order value from that channel. Same chain as SEO: position, then traffic, then revenue."
+      ]
+    },
+    close:"One difference from SEO is worth sitting with. Page two of Google still got clicks. An agent that returns three options and picks one has no page two. The distance between being the recommendation and being invisible gets much wider. At 0.2% penetration almost nobody is working on this yet, which is the normal shape of these things: it is quiet and cheap right now, and it stops being quiet and cheap at the point where it becomes obvious to everyone."
+  },
 
   /* ---- Footer ---------------------------------------------------- */
   sources:[
@@ -698,6 +743,31 @@ $("#scen-table tbody").innerHTML = D.scenarios.map(g=>{
     <td class="num q">${mult.toFixed(1)}×</td>
     <td class="q">${D.scenBasis}</td></tr>`;
 }).join("");
+
+/* ---- Monetization ------------------------------------------------ */
+(function(){
+  const m = D.money;
+  const cols = m.columns.map(c=>`
+    <div class="path">
+      <div class="cap">${c.cap}</div>
+      <ul>${c.items.map(i=>`<li>${i}</li>`).join("")}</ul>
+    </div>`).join("");
+  const steps = m.steps.list.map((s,i)=>`
+    <div class="rung"><div class="n">${i+1}</div><p>${s}</p></div>`).join("");
+  $("#money").innerHTML = `
+    <div class="sec-head">
+      <h2>${m.head}</h2>
+      <span class="note">${m.note}</span>
+    </div>
+    <p class="lede">${m.lede}</p>
+    <div class="paths">${cols}</div>
+    <div class="ladder">
+      <h3>${m.steps.title}</h3>
+      <div class="k">${m.steps.k}</div>
+      <div class="rungs four">${steps}</div>
+    </div>
+    <p>${m.close}</p>`;
+})();
 
 /* ---- Footer ------------------------------------------------------ */
 $("#sources").innerHTML = D.sources.map(s=>`<li>${s}</li>`).join("");
