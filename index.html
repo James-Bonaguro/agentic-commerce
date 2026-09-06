@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic Commerce — Standing Data Briefing</title>
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --paper:#E6E8E4;
+  --panel:#F5F6F3;
+  --panel-2:#EDEFEB;
+  --ink:#171F26;
+  --ink-2:#48535E;
+  --ink-3:#79848E;
+  --rule:#C9CDC6;
+  --rule-soft:#D8DBD5;
+  --signal:#9C6B18;
+  --signal-soft:#C9A25E;
+  --steel:#4F6E80;
+  --steel-soft:#8FA6B2;
+
+  --f-display:"Avenir Next Condensed","Avenir Next","Oswald","Arial Narrow","Helvetica Neue",sans-serif;
+  --f-ui:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --f-body:Charter,"Bitstream Charter","Iowan Old Style",Georgia,"Times New Roman",serif;
+
+  --maxw:1180px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:74px;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:17px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;margin:0;letter-spacing:.005em;}
+p{margin:0 0 .8em;max-width:68ch;}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+
+/* ============================================================
+   MASTHEAD + NAV
+   ============================================================ */
+.masthead{padding:44px 0 20px;}
+.masthead h1{font-size:clamp(34px,5.2vw,58px);line-height:.98;}
+.masthead .sub{
+  font-family:var(--f-ui);font-size:15px;color:var(--ink-2);
+  margin-top:12px;max-width:60ch;
+}
+.stamp{
+  display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--rule);
+  font-family:var(--f-ui);font-size:13px;color:var(--ink-3);
+}
+.stamp b{color:var(--ink-2);font-weight:600;}
+
+nav{
+  position:sticky;top:0;z-index:20;
+  background:rgba(230,232,228,.94);
+  backdrop-filter:saturate(150%) blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+nav ul{
+  max-width:var(--maxw);margin:0 auto;padding:0 32px;
+  display:flex;gap:26px;list-style:none;overflow-x:auto;
+}
+nav a{
+  display:block;padding:14px 0;text-decoration:none;
+  font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2);
+  border-bottom:2px solid transparent;white-space:nowrap;
+}
+nav a:hover,nav a:focus-visible{color:var(--signal);border-bottom-color:var(--signal);}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+section{padding:52px 0;border-top:1px solid var(--rule);}
+section:first-of-type{border-top:none;}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:22px;flex-wrap:wrap;}
+.sec-head h2{font-size:clamp(22px,2.6vw,30px);line-height:1.1;}
+.sec-head .note{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);margin-left:auto;}
+
+.lede{font-size:18px;color:var(--ink-2);max-width:62ch;margin-bottom:26px;}
+
+/* ============================================================
+   HERO CURVE
+   ============================================================ */
+.curve-panel{
+  background:var(--panel);border:1px solid var(--rule-soft);
+  padding:22px 20px 12px;
+}
+.curve-panel svg{display:block;width:100%;height:auto;}
+.legend{
+  display:flex;flex-wrap:wrap;gap:8px 28px;
+  padding:14px 4px 6px;border-top:1px solid var(--rule-soft);margin-top:8px;
+  font-family:var(--f-ui);font-size:13px;color:var(--ink-2);
+}
+.legend span{display:flex;align-items:center;gap:9px;}
+.key{width:22px;height:0;border-top:3px solid var(--ink);border-radius:2px;}
+.key.brass{border-top-color:var(--signal);}
+.key.band{height:11px;border:none;background:rgba(79,110,128,.20);border-radius:2px;}
+.key.dot{height:11px;width:11px;border:none;border-radius:50%;background:var(--steel);opacity:.55;}
+
+/* headline triad */
+.triad{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);margin-top:26px;}
+.triad div{background:var(--panel);padding:20px 20px 22px;}
+.triad .yr{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);}
+.triad .val{font-family:var(--f-display);font-size:clamp(36px,5.6vw,60px);line-height:1;margin-top:6px;}
+.triad .val.fore{color:var(--signal);}
+.triad .cap{font-family:var(--f-ui);font-size:13px;color:var(--ink-2);margin-top:10px;line-height:1.4;}
+.triad .attr{font-family:var(--f-ui);font-size:12px;color:var(--ink-3);margin-top:9px;padding-top:9px;border-top:1px solid var(--rule-soft);line-height:1.35;}
+
+.attr-line{font-family:var(--f-ui);font-size:12.5px;color:var(--ink-3);margin-top:14px;line-height:1.45;}
+.attr-line b{color:var(--ink-2);font-weight:600;}
+
+/* ============================================================
+   PENETRATION
+   ============================================================ */
+.pen{display:grid;grid-template-columns:1fr;gap:26px;}
+.pen-row{background:var(--panel);border:1px solid var(--rule-soft);padding:20px 22px 24px;}
+.pen-row .hd{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+.pen-row .hd .t{font-family:var(--f-display);font-size:20px;}
+.pen-row .hd .n{font-family:var(--f-display);font-size:30px;line-height:1;}
+.pen-row .hd .n.fore{color:var(--signal);}
+.track{position:relative;height:34px;background:var(--panel-2);border:1px solid var(--rule-soft);margin-top:16px;}
+.fill{position:absolute;top:0;bottom:0;left:0;background:var(--ink);}
+.fill.range{background:repeating-linear-gradient(135deg,var(--signal) 0 7px,var(--signal-soft) 7px 14px);}
+.track .ticklab{
+  position:absolute;top:calc(100% + 7px);
+  font-family:var(--f-ui);font-size:12px;color:var(--ink-3);transform:translateX(-50%);
+}
+.pen-row .sub{font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2);margin-top:34px;}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+table{width:100%;border-collapse:collapse;font-family:var(--f-ui);font-size:15.5px;}
+caption{text-align:left;font-family:var(--f-ui);font-size:13px;color:var(--ink-3);padding-bottom:10px;}
+th{
+  text-align:left;font-weight:600;color:var(--ink-2);font-size:13.5px;
+  padding:0 14px 10px 0;border-bottom:1.5px solid var(--ink);
+}
+td{padding:14px 14px 14px 0;border-bottom:1px solid var(--rule-soft);vertical-align:baseline;}
+tbody tr:last-child td{border-bottom:1px solid var(--rule);}
+td.num,th.num{font-variant-numeric:tabular-nums;}
+td.big{font-family:var(--f-display);font-size:20px;}
+td.fore{color:var(--signal);}
+td.lab{color:var(--ink);font-weight:500;}
+td.q{color:var(--ink-3);font-size:14px;}
+
+/* ============================================================
+   FORECAST BARS
+   ============================================================ */
+.fc{display:grid;grid-template-columns:210px 1fr 120px;gap:0 20px;align-items:center;}
+.fc>div{padding:13px 0;border-bottom:1px solid var(--rule-soft);}
+.fc .src{font-family:var(--f-ui);font-size:14.5px;}
+.fc .src small{display:block;color:var(--ink-3);font-size:12.5px;margin-top:2px;}
+.fc .amt{font-family:var(--f-display);font-size:20px;text-align:right;font-variant-numeric:tabular-nums;}
+.barwrap{position:relative;height:22px;background:var(--panel-2);}
+.bar{position:absolute;top:0;bottom:0;background:var(--steel);}
+.bar.outer{background:repeating-linear-gradient(135deg,var(--steel-soft) 0 6px,var(--panel-2) 6px 12px);border:1px solid var(--steel-soft);}
+.fc .axis{grid-column:2;border-bottom:none;padding-top:8px;position:relative;height:26px;}
+.fc .axis span{position:absolute;font-family:var(--f-ui);font-size:12px;color:var(--ink-3);transform:translateX(-50%);}
+
+/* ============================================================
+   LADDER
+   ============================================================ */
+.ladder{margin-bottom:44px;}
+.ladder h3{font-size:19px;margin-bottom:4px;}
+.ladder .k{font-family:var(--f-ui);font-size:13.5px;color:var(--ink-3);margin-bottom:20px;}
+.rungs{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--rule);}
+.rung{background:var(--panel);padding:18px 16px 20px;position:relative;}
+.rung .n{
+  font-family:var(--f-display);font-size:15px;color:var(--ink-3);
+  padding-bottom:9px;margin-bottom:11px;border-bottom:1px solid var(--rule-soft);
+}
+.rung p{font-family:var(--f-ui);font-size:14.5px;line-height:1.42;margin:0;color:var(--ink);}
+.rung.now{background:#EDE6D6;}
+.rung.now .n{color:var(--signal);}
+.rung.end{background:var(--ink);}
+.rung.end p{color:#EDEFEB;}
+.rung.end .n{color:var(--signal-soft);border-bottom-color:#3A444E;}
+.rung .flag{
+  position:absolute;left:16px;bottom:-1px;transform:translateY(100%);
+  font-family:var(--f-ui);font-size:12px;color:var(--signal);padding-top:7px;
+}
+.rungs-foot{height:26px;}
+
+/* ============================================================
+   PATH SHIFT
+   ============================================================ */
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);}
+.path{background:var(--panel);padding:24px 24px 26px;}
+.path.next{background:var(--ink);}
+.path .cap{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);margin-bottom:14px;}
+.path.next .cap{color:var(--steel-soft);}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:7px 9px;}
+.chain b{
+  font-family:var(--f-display);font-size:17px;font-weight:600;
+  background:var(--panel-2);padding:6px 11px;border:1px solid var(--rule-soft);
+}
+.chain i{font-style:normal;color:var(--ink-3);font-size:15px;}
+.path.next .chain b{background:#232D37;color:#EDEFEB;border-color:#333E48;}
+.path.next .chain b.hl{background:var(--signal);color:#fff;border-color:var(--signal);}
+.path.next .chain i{color:var(--steel-soft);}
+
+.pools{margin-top:30px;background:var(--panel);border:1px solid var(--rule-soft);padding:22px 24px 24px;}
+.pools .cap{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);margin-bottom:14px;}
+.pools ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+.pools li{
+  font-family:var(--f-ui);font-size:14px;padding:7px 13px;
+  background:var(--panel-2);border:1px solid var(--rule-soft);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{border-top:1.5px solid var(--ink);padding:34px 0 60px;font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2);}
+footer .cols{display:grid;grid-template-columns:1.15fr 1fr;gap:44px;}
+footer h3{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);font-weight:600;margin-bottom:10px;}
+footer ul{margin:0;padding-left:18px;}
+footer li{margin-bottom:11px;line-height:1.45;}
+footer li b{color:var(--ink);font-weight:600;}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:900px){
+  .wrap{padding:0 20px;}
+  nav ul{padding:0 20px;gap:18px;}
+  .triad{grid-template-columns:1fr;}
+  .rungs{grid-template-columns:1fr;}
+  .rung .flag{position:static;transform:none;display:block;}
+  .rungs-foot{display:none;}
+  .paths{grid-template-columns:1fr;}
+  .fc{grid-template-columns:1fr;gap:0;}
+  .fc .amt{text-align:left;padding-top:0;border-bottom:none;}
+  .fc .src{border-bottom:none;padding-bottom:4px;}
+  .fc .axis{grid-column:1;}
+  footer .cols{grid-template-columns:1fr;}
+}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;}
+
+@media print{
+  nav{display:none;}
+  body{background:#fff;font-size:12px;}
+  section{page-break-inside:avoid;padding:22px 0;}
+  .rung.end{background:#fff;}
+  .rung.end p{color:var(--ink);}
+  .path.next{background:#fff;}
+  .path.next .chain b{background:#eee;color:var(--ink);}
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Sections">
+  <ul>
+    <li><a href="#curve">The curve</a></li>
+    <li><a href="#today">Where we are today</a></li>
+    <li><a href="#metrics">Core metrics</a></li>
+    <li><a href="#forecasts">Independent forecasts</a></li>
+    <li><a href="#ladder">The behavior ladder</a></li>
+    <li><a href="#path">What changes structurally</a></li>
+    <li><a href="#scenarios">2036 scenarios</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <header class="masthead">
+    <h1 id="doc-title">Agentic commerce</h1>
+    <p class="sub" id="doc-sub">Transaction value moving through AI agents acting on behalf of a buyer: market size, adoption rate, and direction of travel.</p>
+    <div class="stamp">
+      <span>Data as of <b id="stamp-date">September 2026</b></span>
+      <span>Currency <b>USD, annual transaction value</b></span>
+      <span>Figures are third-party forecasts, presented as ranges</span>
+    </div>
+  </header>
+</div>
+
+<main class="wrap">
+
+  <!-- ===================== HERO CURVE ===================== -->
+  <section id="curve">
+    <div class="sec-head">
+      <h2>Ten years of transaction value</h2>
+      <span class="note">Logarithmic scale. Each gridline is 10&times; the one below it.</span>
+    </div>
+    <div class="curve-panel">
+      <div id="curve-svg"></div>
+      <div class="legend">
+        <span><i class="key"></i>Base case</span>
+        <span><i class="key band"></i>Range across published forecasts</span>
+        <span><i class="key brass"></i>Extrapolated beyond published forecasts</span>
+        <span><i class="key dot"></i>Broadest definition of the market</span>
+      </div>
+      <div class="attr-line" id="curve-attr"></div>
+    </div>
+    <div class="triad" id="triad"></div>
+  </section>
+
+  <!-- ===================== TODAY ===================== -->
+  <section id="today">
+    <div class="sec-head">
+      <h2>Where we are today</h2>
+      <span class="note">Share of global e-commerce</span>
+    </div>
+    <p class="lede">The entire market above currently runs through two fifths of one percent of transactions. The curve is not a story about a large market getting larger. It is a story about a market that has barely started.</p>
+    <div class="pen" id="pen"></div>
+  </section>
+
+  <!-- ===================== METRICS ===================== -->
+  <section id="metrics">
+    <div class="sec-head">
+      <h2>Core metrics</h2>
+      <span class="note">2026 actual and near-term against 2030&ndash;31 forecast</span>
+    </div>
+    <table id="metrics-table">
+      <caption>Compound annual growth rate calculated across the stated forecast window.</caption>
+      <thead>
+        <tr>
+          <th style="width:25%">Metric</th>
+          <th class="num" style="width:15%">2026</th>
+          <th class="num" style="width:19%">2030&ndash;31</th>
+          <th class="num" style="width:18%">Implied growth</th>
+          <th style="width:23%">Source</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- ===================== FORECASTS ===================== -->
+  <section id="forecasts">
+    <div class="sec-head">
+      <h2>Five independent forecasts</h2>
+      <span class="note">Annual value flowing through agents by 2030&ndash;31</span>
+    </div>
+    <p class="lede">Four separate research groups, working independently and with different definitions, land in the same $3&ndash;5 trillion band. The fifth uses a broader definition of what counts and sits well above it.</p>
+    <div class="fc" id="fc"></div>
+  </section>
+
+  <!-- ===================== LADDER ===================== -->
+  <section id="ladder">
+    <div class="sec-head">
+      <h2>The behavior ladder</h2>
+      <span class="note">How the same habit moves, one rung at a time</span>
+    </div>
+    <p class="lede">Nobody jumps to the end. Each rung feels like a small convenience, and each one hands over slightly more of the decision. Two habits are moving up the same ladder right now.</p>
+    <div id="ladders"></div>
+  </section>
+
+  <!-- ===================== PATH ===================== -->
+  <section id="path">
+    <div class="sec-head">
+      <h2>What changes structurally</h2>
+      <span class="note">Not a new industry. A new layer on top of the existing one.</span>
+    </div>
+    <div class="paths">
+      <div class="path">
+        <div class="cap">Today</div>
+        <div class="chain">
+          <b>Human</b><i>&rarr;</i><b>Search or marketplace</b><i>&rarr;</i><b>Product</b><i>&rarr;</i><b>Checkout</b>
+        </div>
+      </div>
+      <div class="path next">
+        <div class="cap">Increasingly</div>
+        <div class="chain">
+          <b>Human intent</b><i>&rarr;</i><b class="hl">Agent</b><i>&rarr;</i><b>Search</b><i>&rarr;</i><b>Evaluate</b><i>&rarr;</i><b>Negotiate</b><i>&rarr;</i><b>Select</b><i>&rarr;</i><b>Pay</b><i>&rarr;</i><b>Merchant</b>
+        </div>
+      </div>
+    </div>
+    <div class="pools">
+      <div class="cap">Value pools that open up between intent and merchant</div>
+      <ul id="pools"></ul>
+      <div class="attr-line" id="pools-attr"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SCENARIOS ===================== -->
+  <section id="scenarios">
+    <div class="sec-head">
+      <h2>2036 scenarios</h2>
+      <span class="note">Growth applied to the 2031 base case, 2031&ndash;2036</span>
+    </div>
+    <p class="lede">There is no consensus ten-year forecast. What exists is a defensible range: take the 2031 base case and apply a rate of growth normal for a maturing category rather than an exploding one.</p>
+    <table id="scen-table">
+      <caption>Extrapolation, not a published forecast. Presented to bound the range, not to predict a point.</caption>
+      <thead>
+        <tr>
+          <th style="width:30%">Annual growth 2031&ndash;2036</th>
+          <th class="num" style="width:26%">2036 annual value</th>
+          <th class="num" style="width:20%">Multiple of 2031</th>
+          <th style="width:24%">Basis</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <h3>Sources</h3>
+      <ul id="sources"></ul>
+    </div>
+    <div>
+      <h3>Method and limits</h3>
+      <ul id="method"></ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ==================================================================
+   EDIT EVERYTHING HERE. The page is drawn entirely from this object.
+   Values in $ billions unless noted.
+   ================================================================== */
+const D = {
+
+  asOf: "September 2026",
+
+  /* ---- Hero curve ------------------------------------------------ */
+  curve:{
+    startYear: 2026,
+    endYear:   2036,
+    yMin: 3,          // $3B  (axis floor)
+    yMax: 25000,      // $25T (axis ceiling)
+    anchorYear: 2031, // where published forecasts end and extrapolation begins
+
+    base: { y2026: 8,  y2031: 3500, y2036: 8709 },   // base case path
+    low:  { y2026: 8,  y2031: 1500, y2036: 3018 },   // low edge of forecast range
+    high: { y2026: 8,  y2031: 5000, y2036: 18565 },  // high edge of forecast range
+
+    outer: { year: 2030, value: 17500, label: "$17.5T broadest definition" },
+
+    attr: "<b>Base case and band:</b> Juniper Research (2026 base of $8B, 2031 forecast of $3.5T) sets the solid line. The band low is anchored on Accenture and McKinsey ($3.0–3.1T by 2030); the band high on the upper end of McKinsey and Mastercard ($5T by 2030). <b>Dot:</b> Deloitte and Capgemini, up to $17.5T of commerce enabled by agentic AI by 2030, on a broader definition than autonomous checkout. <b>Brass segment beyond 2031:</b> extrapolation by growth rate, not a published forecast."
+  },
+
+  /* ---- Headline triad -------------------------------------------- */
+  triad:[
+    { yr:"2026",      val:"$8B",     cap:"Annual value transacted by agents today", fore:false,
+      attr:"Juniper Research" },
+    { yr:"2030–31",   val:"$3–5T",   cap:"Converged range across four independent forecasts", fore:false,
+      attr:"Juniper Research, McKinsey &amp; Company, Accenture, Mastercard" },
+    { yr:"2036",      val:"$7–13T",  cap:"Central extrapolated range, upside above $15T", fore:true,
+      attr:"Extrapolated from the Juniper Research 2031 base at 15–30% annual growth. No published ten-year forecast exists." }
+  ],
+
+  /* ---- Penetration ----------------------------------------------- */
+  penetration:[
+    { t:"Today", n:"0.2%", pct:0.2, fore:false,
+      sub:"Share of global e-commerce value moving through agents. By transaction count, 0.4%. <b>Source: Mastercard.</b>",
+      ticks:[{p:0,l:"0%"},{p:100,l:"100%"}] },
+    { t:"2030 potential", n:"15–30%", lo:15, hi:30, fore:true,
+      sub:"Share of online commerce forecast to flow through agents. A 75 to 150 times increase from today. <b>Source: Accenture (over 30% of online commerce by 2030), read against the Juniper Research and McKinsey value forecasts.</b>",
+      ticks:[{p:0,l:"0%"},{p:15,l:"15%"},{p:30,l:"30%"},{p:100,l:"100%"}] }
+  ],
+
+  /* ---- Core metric table ----------------------------------------- */
+  metrics:[
+    { m:"Agentic transaction value",   a:"~$8B",   b:"$1.5T – $5T+",  g:"Extreme",     fore:true,
+      s:"Range across Juniper Research, McKinsey, Accenture, Mastercard" },
+    { m:"Base case transaction value", a:"$8B",    b:"$3.5T in 2031", g:"~237% CAGR",  fore:true,
+      s:"Juniper Research" },
+    { m:"Annual transactions",         a:"620M",   b:"120B in 2031",  g:"~187% CAGR",  fore:true,
+      s:"Juniper Research" },
+    { m:"People using agents to buy",  a:"<300M",  b:"1.3B in 2031",  g:"~34% CAGR",   fore:false,
+      s:"Juniper Research" },
+    { m:"Share of e-commerce value",   a:"~0.2%",  b:"15–30%+",       g:"Adoption shift", fore:true,
+      s:"Mastercard (today), Accenture (2030)" }
+  ],
+
+  /* ---- Forecast comparison --------------------------------------- */
+  fcMax: 20000,
+  fcTicks:[0,5000,10000,15000,20000],
+  forecasts:[
+    { src:"Juniper Research",     note:"Agentic commerce transaction value, 2031", lo:3500, hi:3500,  amt:"$3.5T",  outer:false },
+    { src:"McKinsey & Company",   note:"Orchestrated by agents by 2030, excludes most B2B services", lo:3000, hi:5000, amt:"$3–5T", outer:false },
+    { src:"Accenture",            note:"Over 30% of online commerce by 2030",      lo:3100, hi:3100,  amt:"$3.1T",  outer:false },
+    { src:"Mastercard",           note:"Agent-assisted consumer spend by 2030, B2B potentially 3× larger", lo:3000, hi:5000, amt:"$3–5T", outer:false },
+    { src:"Deloitte / Capgemini", note:"Commerce enabled by agentic AI by 2030, broadest definition", lo:0, hi:17500, amt:"to $17.5T", outer:true }
+  ],
+
+  /* ---- Behavior ladders ------------------------------------------ */
+  ladders:[
+    { title:"Answering email",
+      k:"One habit, five rungs, roughly fifteen years",
+      nowIndex:2,
+      rungs:[
+        "You read it and type the reply yourself.",
+        "Autocomplete finishes your sentences as you type.",
+        "You write the reply, then AI rewrites it before you send.",
+        "AI drafts the reply before you have read the email. You review and send.",
+        "The agent answers on its own. The reply lands with another agent."
+      ] },
+    { title:"Buying something",
+      k:"Same ladder, applied to money instead of words",
+      nowIndex:1,
+      rungs:[
+        "You search, compare, and check out yourself.",
+        "You ask AI what to buy, then go buy it yourself.",
+        "The agent researches and fills the cart. You approve and pay.",
+        "The agent holds the card and buys inside rules you set.",
+        "Your agent buys from their agent. No person in the transaction."
+      ] }
+  ],
+
+  /* ---- Value pools ----------------------------------------------- */
+  pools:["Agent discoverability","Product data","Identity","Authorization","Payments","Trust","Merchant APIs","Agent-to-agent protocols","Procurement","Attribution","Post-purchase service"],
+  poolsAttr:"Derived from the agent transaction path described by <b>Mastercard</b> and <b>Visa</b>, both of which are publicly building for machine-speed commerce and microtransactions between agents, and from <b>Accenture</b> on agent-mediated online commerce.",
+
+  /* ---- 2036 scenarios -------------------------------------------- */
+  scenBase: 3500,
+  scenBasis: "Applied to Juniper Research 2031",
+  scenarios:[15,20,25,30],
+
+  /* ---- Footer ---------------------------------------------------- */
+  sources:[
+    "<b>Juniper Research</b> — global agentic commerce transaction value of roughly $8B in 2026 rising to $3.5T in 2031; transaction count of 620M in 2026 rising to 120B in 2031; agentic commerce users below 300M today rising to 1.3B in 2031.",
+    "<b>McKinsey &amp; Company</b> — agentic commerce could orchestrate $3–5T globally by 2030, excluding much of the potential B2B services market.",
+    "<b>Accenture</b> — more than 30% of online commerce, roughly $3.1T, could flow through agents by 2030.",
+    "<b>Mastercard</b> — $3–5T of agent-assisted consumer spending by 2030, with B2B potentially three times larger; agent-mediated commerce today at roughly 0.2% of global e-commerce value and 0.4% of transaction volume.",
+    "<b>Deloitte and Capgemini</b> — up to $17.5T of global commerce enabled by agentic AI by 2030, on a definition broader than strict autonomous checkout. Treated here as the outer bound, not the base case.",
+    "<b>Visa</b> — public positioning on machine-speed commerce and microtransactions between agents."
+  ],
+  method:[
+    "Definitions differ by source. Some count autonomous checkout only, others count any purchase an agent influenced. Ranges are shown rather than point estimates for that reason.",
+    "The $3.5T base case is the Juniper Research figure for 2031. The $3–5T band is where McKinsey, Accenture and Mastercard land for 2030. The $17.5T Deloitte and Capgemini figure uses the broadest definition and is shown separately.",
+    "2036 figures are extrapolations from the Juniper Research 2031 base at 15–30% annual growth. They are not published forecasts. No credible ten-year consensus exists yet.",
+    "Near-term growth rates above 200% are a function of a very small base. They are not expected to hold as the category matures.",
+    "Forecasts are directional. The 0.2% current penetration figure from Mastercard is the most reliable number on this page."
+  ]
+};
+
+/* ==================================================================
+   RENDER
+   ================================================================== */
+const $ = s => document.querySelector(s);
+const fmt = v => {
+  if(v < 1000) return "$" + Math.round(v) + "B";
+  const t = (v/1000).toFixed(v>=10000 ? 0 : 1).replace(/\.0$/,"");
+  return "$" + t + "T";
+};
+
+$("#stamp-date").textContent = D.asOf;
+
+/* ---- Curve ------------------------------------------------------- */
+(function curve(){
+  const c = D.curve;
+  const W=1000, H=470, ml=88, mr=52, mt=30, mb=56;
+  const iw=W-ml-mr, ih=H-mt-mb;
+  const l0=Math.log10(c.yMin), l1=Math.log10(c.yMax);
+  const X = y => ml + (y-c.startYear)/(c.endYear-c.startYear)*iw;
+  const Y = v => mt + ih - (Math.log10(v)-l0)/(l1-l0)*ih;
+
+  // build a smooth series: exponential between the three anchors
+  function series(p){
+    const pts=[]; 
+    const r1=Math.pow(p.y2031/p.y2026,1/(c.anchorYear-c.startYear));
+    const r2=Math.pow(p.y2036/p.y2031,1/(c.endYear-c.anchorYear));
+    for(let y=c.startYear;y<=c.endYear;y++){
+      const v = y<=c.anchorYear ? p.y2026*Math.pow(r1,y-c.startYear)
+                                : p.y2031*Math.pow(r2,y-c.anchorYear);
+      pts.push([X(y),Y(v),y,v]);
+    }
+    return pts;
+  }
+  const base=series(c.base), lo=series(c.low), hi=series(c.high);
+  const path = pts => pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
+  const bandPath = path(hi)+" L"+lo.slice().reverse().map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" L")+" Z";
+
+  const split = X(c.anchorYear);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Agentic commerce transaction value from ${c.startYear} to ${c.endYear} on a logarithmic scale, rising from ${fmt(c.base.y2026)} to a range of ${fmt(c.low.y2036)} to ${fmt(c.high.y2036)}.">`;
+
+  // y gridlines
+  [10,100,1000,10000].forEach(v=>{
+    s+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="#C9CDC6" stroke-width="1"/>`;
+    s+=`<text x="${ml-14}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end" font-family="Avenir Next,Helvetica,Arial,sans-serif" font-size="14" fill="#79848E">${fmt(v)}</text>`;
+  });
+
+  // x ticks
+  for(let y=c.startYear;y<=c.endYear;y++){
+    const t = y%2===0;
+    s+=`<line x1="${X(y).toFixed(1)}" x2="${X(y).toFixed(1)}" y1="${mt+ih}" y2="${mt+ih+(t?7:4)}" stroke="#A9AEA7" stroke-width="1"/>`;
+    if(t) s+=`<text x="${X(y).toFixed(1)}" y="${mt+ih+27}" text-anchor="middle" font-family="Avenir Next,Helvetica,Arial,sans-serif" font-size="14" fill="#79848E">${y}</text>`;
+  }
+  s+=`<line x1="${ml}" x2="${W-mr}" y1="${mt+ih}" y2="${mt+ih}" stroke="#171F26" stroke-width="1.5"/>`;
+
+  // forecast boundary
+  s+=`<line x1="${split.toFixed(1)}" x2="${split.toFixed(1)}" y1="${mt}" y2="${mt+ih}" stroke="#9C6B18" stroke-width="1" stroke-dasharray="3 4" opacity=".7"/>`;
+  s+=`<text x="${(split+10).toFixed(1)}" y="${mt+ih-14}" font-family="Avenir Next,Helvetica,Arial,sans-serif" font-size="13" fill="#9C6B18">Published forecasts end here</text>`;
+
+  // band + lines
+  s+=`<path d="${bandPath}" fill="rgba(79,110,128,.20)"/>`;
+  const upTo = base.filter(p=>p[2]<=c.anchorYear);
+  const after = base.filter(p=>p[2]>=c.anchorYear);
+  s+=`<path d="${path(upTo)}" fill="none" stroke="#171F26" stroke-width="3.5" stroke-linejoin="round"/>`;
+  s+=`<path d="${path(after)}" fill="none" stroke="#9C6B18" stroke-width="3.5" stroke-linejoin="round" stroke-dasharray="9 6"/>`;
+
+  // outer TAM marker
+  const ox=X(c.outer.year), oy=Y(c.outer.value);
+  s+=`<circle cx="${ox.toFixed(1)}" cy="${oy.toFixed(1)}" r="6.5" fill="#4F6E80" opacity=".55"/>`;
+  s+=`<text x="${(ox+13).toFixed(1)}" y="${(oy+5).toFixed(1)}" font-family="Avenir Next,Helvetica,Arial,sans-serif" font-size="14" fill="#4F6E80">${c.outer.label}</text>`;
+
+  // anchor markers
+  function mark(x,y,label,fill,dx,dy,anchor){
+    s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6" fill="${fill}"/>`;
+    s+=`<text x="${(x+dx).toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="${anchor}" font-family="Avenir Next Condensed,Avenir Next,Helvetica,sans-serif" font-weight="600" font-size="27" fill="${fill}">${label}</text>`;
+  }
+  mark(X(2026),Y(c.base.y2026),fmt(c.base.y2026),"#171F26",14,-14,"start");
+  mark(X(2031),Y(c.base.y2031),fmt(c.base.y2031),"#171F26",0,-20,"middle");
+  mark(X(2036),Y(c.base.y2036),fmt(c.base.y2036),"#9C6B18",-6,-20,"end");
+
+  s+=`</svg>`;
+  $("#curve-svg").innerHTML=s;
+})();
+
+$("#curve-attr").innerHTML = D.curve.attr;
+
+/* ---- Triad ------------------------------------------------------- */
+$("#triad").innerHTML = D.triad.map(t=>`
+  <div><div class="yr">${t.yr}</div>
+  <div class="val${t.fore?" fore":""}">${t.val}</div>
+  <div class="cap">${t.cap}</div>
+  <div class="attr">${t.attr}</div></div>`).join("");
+
+/* ---- Penetration ------------------------------------------------- */
+$("#pen").innerHTML = D.penetration.map(r=>{
+  const fill = r.lo!=null
+    ? `<div class="fill range" style="left:${r.lo}%;width:${r.hi-r.lo}%"></div>`
+    : `<div class="fill" style="width:${Math.max(r.pct,0.35)}%"></div>`;
+  const ticks = r.ticks.map(t=>{
+    const tx = t.p===0 ? "translateX(0)" : t.p===100 ? "translateX(-100%)" : "translateX(-50%)";
+    return `<span class="ticklab" style="left:${t.p}%;transform:${tx}">${t.l}</span>`;
+  }).join("");
+  return `<div class="pen-row">
+    <div class="hd"><span class="t">${r.t}</span><span class="n${r.fore?" fore":""}">${r.n}</span></div>
+    <div class="track">${fill}${ticks}</div>
+    <div class="sub">${r.sub}</div></div>`;
+}).join("");
+
+/* ---- Metrics ----------------------------------------------------- */
+$("#metrics-table tbody").innerHTML = D.metrics.map(m=>`
+  <tr><td class="lab">${m.m}</td>
+  <td class="num big">${m.a}</td>
+  <td class="num big${m.fore?" fore":""}">${m.b}</td>
+  <td class="num q">${m.g}</td>
+  <td class="q">${m.s}</td></tr>`).join("");
+
+/* ---- Forecasts --------------------------------------------------- */
+(function(){
+  const max=D.fcMax;
+  let h = D.forecasts.map(f=>{
+    const left=(f.lo/max)*100, w=Math.max(((f.hi-f.lo)/max)*100,0.6);
+    return `<div class="src">${f.src}<small>${f.note}</small></div>
+      <div><div class="barwrap"><div class="bar${f.outer?" outer":""}" style="left:${left}%;width:${w}%"></div></div></div>
+      <div class="amt">${f.amt}</div>`;
+  }).join("");
+  h += `<div class="axis">` + D.fcTicks.map(t=>
+    `<span style="left:${(t/max)*100}%">${t===0?"0":fmt(t)}</span>`).join("") + `</div>`;
+  $("#fc").innerHTML=h;
+})();
+
+/* ---- Ladders ----------------------------------------------------- */
+$("#ladders").innerHTML = D.ladders.map(L=>`
+  <div class="ladder">
+    <h3>${L.title}</h3>
+    <div class="k">${L.k}</div>
+    <div class="rungs">${L.rungs.map((r,i)=>`
+      <div class="rung${i===L.nowIndex?" now":""}${i===L.rungs.length-1?" end":""}">
+        <div class="n">${i+1}</div><p>${r}</p>
+        ${i===L.nowIndex?'<span class="flag">Most businesses are here</span>':""}
+      </div>`).join("")}</div>
+    <div class="rungs-foot"></div>
+  </div>`).join("");
+
+/* ---- Pools ------------------------------------------------------- */
+$("#pools").innerHTML = D.pools.map(p=>`<li>${p}</li>`).join("");
+$("#pools-attr").innerHTML = D.poolsAttr;
+
+/* ---- Scenarios --------------------------------------------------- */
+$("#scen-table tbody").innerHTML = D.scenarios.map(g=>{
+  const mult=Math.pow(1+g/100,5), v=D.scenBase*mult;
+  return `<tr><td class="lab">${g}%</td>
+    <td class="num big fore">$${(v/1000).toFixed(1)}T</td>
+    <td class="num q">${mult.toFixed(1)}×</td>
+    <td class="q">${D.scenBasis}</td></tr>`;
+}).join("");
+
+/* ---- Footer ------------------------------------------------------ */
+$("#sources").innerHTML = D.sources.map(s=>`<li>${s}</li>`).join("");
+$("#method").innerHTML  = D.method.map(s=>`<li>${s}</li>`).join("");
+</script>
+</body>
+</html>
