@@ -82,6 +82,7 @@ specific, fixable, obviously-costly gap.
 |------|-----------|
 | [`query-sets.md`](query-sets.md) | How to build the thirty questions. The seven types, a worked example, and the rules that keep a re-run comparable. |
 | [`report.html`](report.html) | The deliverable. Self-contained, renders from a `D` object, matches the briefing's design. Ships with a clearly-labelled sample. |
+| [`../playbooks/ecommerce-audit-checklist.md`](../playbooks/ecommerce-audit-checklist.md) | The step before this one. Site, social, and retail-distribution reality check, so the assistant-visibility findings here land on verified ground instead of guesses. |
 
 ## Before this gets automated
 
