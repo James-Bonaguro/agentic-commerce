@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assistant Visibility Audit</title>
+<style>
+/* ============================================================
+   TOKENS — identical to the briefing. Keep them in sync.
+   ============================================================ */
+:root{
+  --paper:#E6E8E4;
+  --panel:#F5F6F3;
+  --panel-2:#EDEFEB;
+  --ink:#171F26;
+  --ink-2:#48535E;
+  --ink-3:#79848E;
+  --rule:#C9CDC6;
+  --rule-soft:#D8DBD5;
+  --signal:#9C6B18;
+  --signal-soft:#C9A25E;
+  --steel:#4F6E80;
+  --steel-soft:#8FA6B2;
+
+  --f-display:"Avenir Next Condensed","Avenir Next","Oswald","Arial Narrow","Helvetica Neue",sans-serif;
+  --f-ui:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --f-body:Charter,"Bitstream Charter","Iowan Old Style",Georgia,"Times New Roman",serif;
+
+  --maxw:1180px;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:17px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;margin:0;letter-spacing:.005em;}
+p{margin:0 0 .8em;max-width:68ch;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+
+/* ---- masthead ---- */
+.masthead{padding:44px 0 20px;}
+.masthead h1{font-size:clamp(30px,4.6vw,50px);line-height:1;}
+.masthead .sub{font-family:var(--f-ui);font-size:15px;color:var(--ink-2);margin-top:12px;max-width:60ch;}
+.stamp{
+  display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--rule);
+  font-family:var(--f-ui);font-size:13px;color:var(--ink-3);
+}
+.stamp b{color:var(--ink-2);font-weight:600;}
+.flagbar{
+  font-family:var(--f-ui);font-size:13px;color:var(--signal);
+  border:1px solid var(--signal-soft);background:#EDE6D6;
+  padding:10px 14px;margin-top:18px;
+}
+
+/* ---- sections ---- */
+section{padding:48px 0;border-top:1px solid var(--rule);}
+section:first-of-type{border-top:none;}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:22px;flex-wrap:wrap;}
+.sec-head h2{font-size:clamp(21px,2.5vw,28px);line-height:1.1;}
+.sec-head .note{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);margin-left:auto;}
+.lede{font-size:18px;color:var(--ink-2);max-width:62ch;margin-bottom:26px;}
+
+/* ---- headline triad ---- */
+.triad{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);}
+.triad div{background:var(--panel);padding:20px 20px 22px;}
+.triad .yr{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);}
+.triad .val{font-family:var(--f-display);font-size:clamp(36px,5.6vw,58px);line-height:1;margin-top:6px;}
+.triad .val.warn{color:var(--signal);}
+.triad .cap{font-family:var(--f-ui);font-size:13px;color:var(--ink-2);margin-top:10px;line-height:1.4;}
+
+/* ---- rate track ---- */
+.track{position:relative;height:30px;background:var(--panel-2);border:1px solid var(--rule-soft);margin-top:16px;}
+.fill{position:absolute;top:0;bottom:0;left:0;background:var(--ink);}
+.fill.warn{background:repeating-linear-gradient(135deg,var(--signal) 0 7px,var(--signal-soft) 7px 14px);}
+.ticklab{position:absolute;top:calc(100% + 7px);font-family:var(--f-ui);font-size:12px;color:var(--ink-3);}
+
+/* ---- tables ---- */
+table{width:100%;border-collapse:collapse;font-family:var(--f-ui);font-size:15px;}
+caption{text-align:left;font-family:var(--f-ui);font-size:13px;color:var(--ink-3);padding-bottom:10px;}
+th{text-align:left;font-weight:600;color:var(--ink-2);font-size:13.5px;padding:0 14px 10px 0;border-bottom:1.5px solid var(--ink);}
+td{padding:13px 14px 13px 0;border-bottom:1px solid var(--rule-soft);vertical-align:baseline;}
+tbody tr:last-child td{border-bottom:1px solid var(--rule);}
+td.num,th.num{font-variant-numeric:tabular-nums;}
+td.q{color:var(--ink-3);font-size:14px;}
+td.lab{color:var(--ink);font-weight:500;}
+.tag{font-family:var(--f-ui);font-size:12.5px;font-weight:600;white-space:nowrap;}
+.tag.no{color:var(--signal);}
+.tag.yes{color:var(--steel);}
+
+/* ---- competitor bars ---- */
+.fc{display:grid;grid-template-columns:230px 1fr 74px;gap:0 20px;align-items:center;}
+.fc>div{padding:11px 0;border-bottom:1px solid var(--rule-soft);}
+.fc .src{font-family:var(--f-ui);font-size:14.5px;}
+.fc .amt{font-family:var(--f-display);font-size:19px;text-align:right;font-variant-numeric:tabular-nums;}
+.barwrap{position:relative;height:20px;background:var(--panel-2);}
+.bar{position:absolute;top:0;bottom:0;left:0;background:var(--steel);}
+.bar.self{background:var(--signal);}
+
+/* ---- two-column panels ---- */
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);}
+.path{background:var(--panel);padding:24px 24px 26px;}
+.path .cap{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);margin-bottom:14px;}
+.path ul{margin:0;padding-left:18px;}
+.path li{font-family:var(--f-ui);font-size:14.5px;line-height:1.42;color:var(--ink);margin-bottom:12px;}
+.path li:last-child{margin-bottom:0;}
+.path li b{font-weight:600;}
+
+/* ---- numbered steps ---- */
+.rungs{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);}
+.rung{background:var(--panel);padding:18px 16px 20px;}
+.rung .n{font-family:var(--f-display);font-size:15px;color:var(--ink-3);padding-bottom:9px;margin-bottom:11px;border-bottom:1px solid var(--rule-soft);}
+.rung p{font-family:var(--f-ui);font-size:14.5px;line-height:1.42;margin:0;color:var(--ink);}
+
+footer{border-top:1.5px solid var(--ink);padding:30px 0 60px;font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2);}
+footer ul{margin:0;padding-left:18px;}
+footer li{margin-bottom:10px;line-height:1.45;max-width:80ch;}
+footer h3{font-family:var(--f-ui);font-size:13px;color:var(--ink-3);font-weight:600;margin-bottom:10px;}
+
+@media(max-width:900px){
+  .wrap{padding:0 20px;}
+  .triad{grid-template-columns:1fr;}
+  .paths{grid-template-columns:1fr;}
+  .rungs{grid-template-columns:1fr;}
+  .fc{grid-template-columns:1fr;gap:0;}
+  .fc .amt{text-align:left;border-bottom:none;padding-top:0;}
+  .fc .src{border-bottom:none;padding-bottom:4px;}
+  .tblwrap{overflow-x:auto;}
+}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;}
+
+@media print{
+  body{background:#fff;font-size:12px;}
+  section{page-break-inside:avoid;padding:20px 0;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="masthead">
+    <h1 id="m-title">Assistant visibility audit</h1>
+    <p class="sub" id="m-sub"></p>
+    <div class="stamp" id="m-stamp"></div>
+    <div class="flagbar" id="m-flag" hidden></div>
+  </header>
+</div>
+
+<main class="wrap">
+  <section id="summary"></section>
+  <section id="queries"></section>
+  <section id="accuracy"></section>
+  <section id="competitors"></section>
+  <section id="causes"></section>
+  <section id="next"></section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <h3>Method and limits</h3>
+    <ul id="method"></ul>
+  </div>
+</footer>
+
+<script>
+/* ==================================================================
+   EDIT EVERYTHING HERE. The page is drawn entirely from this object.
+   One audit = one copy of this file with D replaced.
+   ================================================================== */
+const D = {
+
+  meta:{
+    business:"Northside Plumbing & Drain",
+    category:"Residential plumbing",
+    market:"Rochester, NY",
+    date:"September 2026",
+    assistants:"ChatGPT, Claude, Gemini, Perplexity, Google AI Mode",
+    runs:"30 questions × 5 assistants = 150 answers",
+    /* Set to false and clear the banner for a real client audit. */
+    sample:true,
+    sampleNote:"SAMPLE REPORT. The business above is fictional and every number on this page is illustrative, included to show the format. It is not a record of a real audit."
+  },
+
+  /* ---- Headline ---------------------------------------------------- */
+  summary:{
+    lede:"This is the before picture. Thirty questions a real customer would ask, run through the five assistants people actually use, recorded exactly as they came back. No changes have been made yet. The point is to have a dated record of where things stand.",
+    triad:[
+      { k:"Appeared at all",     v:"19%",  cap:"Named in 29 of 150 answers. In the other 121, a competitor was named instead.", warn:true },
+      { k:"Average placement",   v:"2.9",  cap:"When named, typically third of three or four options offered.", warn:false },
+      { k:"Described correctly", v:"52%",  cap:"Of the 29 appearances, 14 contained at least one wrong or outdated detail.", warn:true }
+    ],
+    rate:{ label:"Share of answers naming the business", pct:19 }
+  },
+
+  /* ---- Query log --------------------------------------------------- */
+  queries:{
+    note:"Excerpt. The full log of all 30 questions is delivered with this report.",
+    lede:"These are not keywords. They are the way people actually phrase a request to an assistant: full sentences, with constraints attached.",
+    rows:[
+      { q:"Who is the best plumber in Rochester NY?",                       seen:false, pos:"—", said:"Three competitors named. Business not mentioned." },
+      { q:"I have a burst pipe, who can come out today in Rochester?",      seen:true,  pos:"2",  said:"Listed second. Emergency availability described as \"unclear.\"" },
+      { q:"Cheapest drain cleaning near me, Rochester",                     seen:false, pos:"—", said:"Two competitors with published pricing named. No pricing found for this business." },
+      { q:"Plumber in Rochester that works on tankless water heaters",      seen:false, pos:"—", said:"Service not associated with the business anywhere the assistant could read." },
+      { q:"Is Northside Plumbing licensed and insured?",                    seen:true,  pos:"1",  said:"Answered \"likely, but not confirmed on their site.\"" },
+      { q:"Who should I call for a water heater replacement quote?",        seen:true,  pos:"3",  said:"Listed third. No quote mechanism mentioned." },
+      { q:"Weekend emergency plumber Rochester NY",                         seen:false, pos:"—", said:"Business offers weekend service. Assistant did not know this." },
+      { q:"Plumbers near me with good reviews, Rochester",                  seen:true,  pos:"3",  said:"Rating cited as 4.2. Current rating is 4.7." }
+    ]
+  },
+
+  /* ---- Accuracy findings ------------------------------------------- */
+  accuracy:{
+    lede:"Where the business did get named, this is what the assistants said about it. Being invisible is one problem. Being described wrong is a different and more expensive one.",
+    rows:[
+      { claim:"Hours of operation",  status:"Wrong",      detail:"Two assistants gave hours that changed over a year ago. One told the user the business was closed on Saturdays." },
+      { claim:"Review rating",       status:"Stale",      detail:"Cited as 4.2 stars. The current public rating is 4.7 across the same sources." },
+      { claim:"Service area",        status:"Too narrow", detail:"Described as serving the city only. The business serves four surrounding towns." },
+      { claim:"Tankless systems",    status:"Missing",    detail:"A core service line, absent from every answer. No assistant associated it with the business." },
+      { claim:"Emergency callout",   status:"Uncertain",  detail:"Described with hedging language: \"may offer,\" \"unclear.\" Hedged answers lose to confident ones." },
+      { claim:"Licensing",           status:"Unverified", detail:"License is real and current, but stated nowhere a machine can check it." }
+    ]
+  },
+
+  /* ---- Competitors -------------------------------------------------- */
+  competitors:{
+    lede:"When the business was not named, someone else was. This is who, and how often, across the same 150 answers.",
+    rows:[
+      { name:"Competitor A",              n:71, self:false },
+      { name:"Competitor B",              n:54, self:false },
+      { name:"Competitor C",              n:38, self:false },
+      { name:"Northside Plumbing & Drain", n:29, self:true  },
+      { name:"Competitor D",              n:22, self:false }
+    ],
+    note:"Counts exceed 150 because most answers name more than one option."
+  },
+
+  /* ---- Why ---------------------------------------------------------- */
+  causes:{
+    lede:"None of this is a penalty or a punishment. An assistant builds its answer from what it can read and confirm. Where it cannot confirm something, it either hedges or moves on to a business that made confirmation easy.",
+    left:{
+      cap:"What the assistants could not find",
+      items:[
+        "<b>No structured business data.</b> Hours, service area and services exist as prose on a page, not in a form a machine reads reliably.",
+        "<b>No pricing signal of any kind.</b> Competitors who published even a starting range were named in the price questions. This business was not.",
+        "<b>Service list is incomplete.</b> Several real service lines appear nowhere except inside paragraph text on one page.",
+        "<b>Credentials are stated, not verifiable.</b> License and insurance are claimed in copy with nothing an assistant can check against.",
+        "<b>Listings disagree with each other.</b> Three directories carry three different sets of hours. Conflicting sources make an assistant hedge."
+      ]
+    },
+    right:{
+      cap:"What that costs, in plain terms",
+      items:[
+        "<b>Hedged answers lose.</b> When an assistant is unsure, it either omits the business or attaches a caveat. Both push the customer to a competitor.",
+        "<b>There is no page two.</b> An answer that offers three options and the business is not one of them is a lost customer who never knew it existed.",
+        "<b>Wrong hours turn into no-shows.</b> Being told a business is closed when it is open is worse than not being found.",
+        "<b>Stale ratings undersell.</b> A 4.2 shown against a competitor's 4.6 loses a comparison the business would actually win at 4.7.",
+        "<b>Missing services are invisible revenue.</b> Nobody asks for a service they were never told the business offers."
+      ]
+    }
+  },
+
+  /* ---- What happens next --------------------------------------------- */
+  next:{
+    lede:"The order matters. Fixing what is wrong comes before adding what is missing, because inaccurate data actively costs customers while absent data only fails to win them.",
+    steps:[
+      "Correct and reconcile the facts. Hours, service area, rating sources and contact details made identical everywhere they appear, so nothing an assistant reads contradicts anything else.",
+      "Publish the full service list and the attributes that go with each one, in structured form: what it is, what it costs or starts at, how fast, where.",
+      "Make credentials checkable. License, insurance and certifications stated so a machine can confirm rather than guess.",
+      "Re-run this exact audit on a schedule and track the same three numbers. Appearance rate, placement, accuracy. Same questions, same assistants, so the comparison is honest."
+    ]
+  },
+
+  /* ---- Method --------------------------------------------------------- */
+  method:[
+    "Thirty questions were written to match how a customer actually asks: full sentences with constraints, not keywords. They cover the business's real service lines, its market, and the urgent cases that drive most calls.",
+    "Each question was run against five assistants in a fresh session with no history, no personalization and no logged-in account, so results reflect a first-time customer rather than a returning one.",
+    "Answers were recorded as returned: whether the business was named, its position among the options offered, and every factual claim made about it.",
+    "Assistant answers vary between runs. Rates on this page are the share across all 150 answers, which is more stable than any single result, but a re-run will not reproduce the numbers exactly. That is why the same question set is reused every time.",
+    "This audit measures visibility inside assistant answers. It is not a search ranking report and the two do not move together reliably."
+  ]
+};
+
+/* ==================================================================
+   RENDER
+   ================================================================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s);
+
+/* ---- Masthead ------------------------------------------------------- */
+$("#m-sub").textContent =
+  `How ${D.meta.business} appears when customers ask an AI assistant for a ${D.meta.category.toLowerCase()} business in ${D.meta.market}.`;
+$("#m-stamp").innerHTML = `
+  <span>Audited <b>${D.meta.date}</b></span>
+  <span>Assistants <b>${D.meta.assistants}</b></span>
+  <span>${D.meta.runs}</span>`;
+if(D.meta.sample){
+  const f = $("#m-flag");
+  f.textContent = D.meta.sampleNote;
+  f.hidden = false;
+}
+
+/* ---- Summary -------------------------------------------------------- */
+$("#summary").innerHTML = `
+  <div class="sec-head">
+    <h2>Where things stand today</h2>
+    <span class="note">Baseline, before any changes</span>
+  </div>
+  <p class="lede">${D.summary.lede}</p>
+  <div class="triad">${D.summary.triad.map(t=>`
+    <div>
+      <div class="yr">${t.k}</div>
+      <div class="val${t.warn?" warn":""}">${t.v}</div>
+      <div class="cap">${t.cap}</div>
+    </div>`).join("")}</div>
+  <div class="track">
+    <div class="fill warn" style="width:${D.summary.rate.pct}%"></div>
+    <span class="ticklab" style="left:0">0%</span>
+    <span class="ticklab" style="left:${D.summary.rate.pct}%;transform:translateX(-50%)">${D.summary.rate.pct}%</span>
+    <span class="ticklab" style="right:0">100%</span>
+  </div>
+  <p style="font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2);margin-top:34px">${D.summary.rate.label}</p>`;
+
+/* ---- Queries -------------------------------------------------------- */
+$("#queries").innerHTML = `
+  <div class="sec-head">
+    <h2>What customers asked, and what came back</h2>
+    <span class="note">${D.queries.note}</span>
+  </div>
+  <p class="lede">${D.queries.lede}</p>
+  <div class="tblwrap"><table>
+    <thead><tr>
+      <th style="width:36%">Question asked</th>
+      <th style="width:10%">Named</th>
+      <th class="num" style="width:10%">Position</th>
+      <th style="width:44%">What the assistant said</th>
+    </tr></thead>
+    <tbody>${D.queries.rows.map(r=>`
+      <tr>
+        <td class="lab">${r.q}</td>
+        <td><span class="tag ${r.seen?"yes":"no"}">${r.seen?"Yes":"No"}</span></td>
+        <td class="num">${r.pos}</td>
+        <td class="q">${r.said}</td>
+      </tr>`).join("")}</tbody>
+  </table></div>`;
+
+/* ---- Accuracy ------------------------------------------------------- */
+$("#accuracy").innerHTML = `
+  <div class="sec-head">
+    <h2>What the assistants got wrong</h2>
+    <span class="note">Across the answers where the business was named</span>
+  </div>
+  <p class="lede">${D.accuracy.lede}</p>
+  <div class="tblwrap"><table>
+    <thead><tr>
+      <th style="width:22%">Detail</th>
+      <th style="width:14%">Status</th>
+      <th style="width:64%">What was said</th>
+    </tr></thead>
+    <tbody>${D.accuracy.rows.map(r=>`
+      <tr>
+        <td class="lab">${r.claim}</td>
+        <td><span class="tag no">${r.status}</span></td>
+        <td class="q">${r.detail}</td>
+      </tr>`).join("")}</tbody>
+  </table></div>`;
+
+/* ---- Competitors ---------------------------------------------------- */
+(function(){
+  const max = Math.max(...D.competitors.rows.map(r=>r.n));
+  $("#competitors").innerHTML = `
+    <div class="sec-head">
+      <h2>Who got named instead</h2>
+      <span class="note">${D.competitors.note}</span>
+    </div>
+    <p class="lede">${D.competitors.lede}</p>
+    <div class="fc">${D.competitors.rows.map(r=>`
+      <div class="src">${r.name}</div>
+      <div><div class="barwrap"><div class="bar${r.self?" self":""}" style="width:${(r.n/max)*100}%"></div></div></div>
+      <div class="amt">${r.n}</div>`).join("")}</div>`;
+})();
+
+/* ---- Causes --------------------------------------------------------- */
+$("#causes").innerHTML = `
+  <div class="sec-head">
+    <h2>Why this is happening</h2>
+    <span class="note">Cause, not blame</span>
+  </div>
+  <p class="lede">${D.causes.lede}</p>
+  <div class="paths">
+    ${[D.causes.left,D.causes.right].map(c=>`
+      <div class="path">
+        <div class="cap">${c.cap}</div>
+        <ul>${c.items.map(i=>`<li>${i}</li>`).join("")}</ul>
+      </div>`).join("")}
+  </div>`;
+
+/* ---- Next ----------------------------------------------------------- */
+$("#next").innerHTML = `
+  <div class="sec-head">
+    <h2>What changes it</h2>
+    <span class="note">In this order</span>
+  </div>
+  <p class="lede">${D.next.lede}</p>
+  <div class="rungs">${D.next.steps.map((s,i)=>`
+    <div class="rung"><div class="n">${i+1}</div><p>${s}</p></div>`).join("")}</div>`;
+
+/* ---- Method --------------------------------------------------------- */
+$("#method").innerHTML = D.method.map(m=>`<li>${m}</li>`).join("");
+</script>
+</body>
+</html>
