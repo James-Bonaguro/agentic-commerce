@@ -41,14 +41,33 @@ up.
 ### 3. Run every question through every assistant
 ChatGPT, Claude, Gemini, Perplexity, Google AI Mode. Five is enough.
 
-- **Fresh session every time.** No history, no memory, no logged-in account.
-  Personalization contaminates the result.
+The thing to control for is personalization, not authentication. A logged-out
+session is the cleanest way to get there, but it is not available everywhere.
+
+- **Logged out where the assistant allows it.** ChatGPT and Google AI Mode
+  (`google.com/search?q=...&udm=50`) both answer without an account. ChatGPT starts
+  pushing sign-up after a handful of anonymous messages in one session, which is
+  another reason to start fresh each time.
+- **Clean account where one is required.** Claude, Gemini and Perplexity have
+  required a logged-in account in testing. Use an account with memory, history and
+  personalization turned off, and record which questions ran authenticated so a
+  re-run reproduces the same conditions.
+- **Fresh session every question, always.** No prior context, no carried-over
+  conversation. This matters more than login state.
 - **Screenshot everything.** The screenshots are the deliverable's credibility.
   An owner who does not believe the summary will believe the screenshot.
 - **Record verbatim.** Do not paraphrase what the assistant said about them.
 
+A raw search-index lookup is not the same instrument as a synthesized assistant
+answer. If one is used to fill a gap, label it supplementary and keep it out of the
+three numbers.
+
 For each answer record: was the business named, what position among the options,
 and every factual claim made about it.
+
+When two assistants disagree about the same checkable fact, that is a finding in
+its own right, not noise to average away: whoever asks gets a different answer
+depending on which one they happen to open.
 
 ### 4. Compute three numbers
 - **Appearance rate.** Answers naming the business ÷ total answers.

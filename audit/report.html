@@ -177,7 +177,7 @@ const D = {
     market:"Rochester, NY",
     date:"September 2026",
     assistants:"ChatGPT, Claude, Gemini, Perplexity, Google AI Mode",
-    runs:"30 questions × 5 assistants = 150 answers",
+    runs:"30 questions across 5 assistants, 150 answers recorded",
     /* Set to false and clear the banner for a real client audit. */
     sample:true,
     sampleNote:"SAMPLE REPORT. The business above is fictional and every number on this page is illustrative, included to show the format. It is not a record of a real audit."
@@ -275,7 +275,7 @@ const D = {
   /* ---- Method --------------------------------------------------------- */
   method:[
     "Thirty questions were written to match how a customer actually asks: full sentences with constraints, not keywords. They cover the business's real service lines, its market, and the urgent cases that drive most calls.",
-    "Each question was run against five assistants in a fresh session with no history, no personalization and no logged-in account, so results reflect a first-time customer rather than a returning one.",
+    "Each question was run against five assistants in a fresh session with no prior context, so results reflect a first-time customer rather than a returning one. Two of the five answer without an account and were run logged out. The remaining three require an account and were run on a clean one with memory, history and personalization turned off.",
     "Answers were recorded as returned: whether the business was named, its position among the options offered, and every factual claim made about it.",
     "Assistant answers vary between runs. Rates on this page are the share across all 150 answers, which is more stable than any single result, but a re-run will not reproduce the numbers exactly. That is why the same question set is reused every time.",
     "This audit measures visibility inside assistant answers. It is not a search ranking report and the two do not move together reliably."
