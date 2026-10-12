@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Call Card</title>
+<style>
+/* ============================================================
+   TOKENS — identical to the briefing and the audit report.
+   ============================================================ */
+:root{
+  --paper:#E6E8E4;
+  --panel:#F5F6F3;
+  --panel-2:#EDEFEB;
+  --ink:#171F26;
+  --ink-2:#48535E;
+  --ink-3:#79848E;
+  --rule:#C9CDC6;
+  --rule-soft:#D8DBD5;
+  --signal:#9C6B18;
+  --signal-soft:#C9A25E;
+  --steel:#4F6E80;
+  --steel-soft:#8FA6B2;
+
+  --f-display:"Avenir Next Condensed","Avenir Next","Oswald","Arial Narrow","Helvetica Neue",sans-serif;
+  --f-ui:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --f-body:Charter,"Bitstream Charter","Iowan Old Style",Georgia,"Times New Roman",serif;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-ui);font-size:15px;line-height:1.4;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2{font-family:var(--f-display);font-weight:600;margin:0;letter-spacing:.005em;}
+p{margin:0;}
+.card{max-width:880px;margin:0 auto;padding:28px 28px 40px;}
+
+/* ---- header ---- */
+.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;}
+.top h1{font-size:32px;line-height:1;}
+.top .who{font-size:13px;color:var(--ink-3);}
+.top .who b{color:var(--ink-2);font-weight:600;}
+.goal{margin-top:10px;padding-top:10px;border-top:1.5px solid var(--ink);font-size:14px;color:var(--ink-2);}
+.goal b{color:var(--ink);font-weight:600;}
+.flagbar{
+  font-size:12px;color:var(--signal);border:1px solid var(--signal-soft);
+  background:#EDE6D6;padding:7px 11px;margin-top:12px;
+}
+
+/* ---- section label ---- */
+.lab{
+  font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-3);margin:20px 0 8px;
+}
+
+/* ---- opener ---- */
+.opener{
+  font-family:var(--f-body);font-size:18px;line-height:1.45;
+  background:var(--panel);border-left:3px solid var(--signal);padding:12px 16px;
+}
+
+/* ---- facts ---- */
+.facts{list-style:none;margin:0;padding:0;background:var(--rule);display:grid;gap:1px;}
+.facts li{background:var(--panel);display:grid;grid-template-columns:30px 1fr;gap:0 10px;padding:10px 14px 11px 10px;}
+.facts .n{font-family:var(--f-display);font-size:22px;line-height:1;color:var(--signal);text-align:center;padding-top:1px;}
+.facts .say{font-size:15.5px;font-weight:600;line-height:1.3;}
+.facts .sub{display:flex;flex-wrap:wrap;gap:2px 18px;margin-top:4px;font-size:12.5px;color:var(--ink-2);}
+.facts .sub i{font-style:normal;color:var(--ink-3);}
+
+/* ---- two-column body ---- */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;}
+ul.plain{list-style:none;margin:0;padding:0;}
+ul.plain li{padding:6px 0;border-bottom:1px solid var(--rule-soft);font-size:14px;}
+ul.plain li:last-child{border-bottom:none;}
+.obj li{display:grid;gap:2px;}
+.obj .they{color:var(--ink-3);font-size:13px;}
+.obj .you{font-size:14px;}
+
+/* ---- the ask ---- */
+.ask{background:var(--ink);color:#EDEFEB;padding:14px 16px 15px;}
+.ask .main{font-family:var(--f-body);font-size:17px;line-height:1.4;}
+.ask .why{font-size:12.5px;color:var(--steel-soft);margin-top:8px;}
+.fallback{background:var(--panel);border:1px solid var(--rule-soft);border-top:none;padding:10px 16px 11px;font-size:14px;}
+.fallback i{font-style:normal;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:3px;}
+.dont li{color:var(--ink-2);}
+.dont li::before{content:"\00D7";color:var(--signal);font-weight:600;margin-right:8px;}
+
+/* ---- after the call ---- */
+.after{background:var(--panel);border:1px solid var(--rule-soft);padding:12px 16px 14px;}
+.react{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:14px;}
+.react span::before{content:"";display:inline-block;width:12px;height:12px;border:1.5px solid var(--ink-2);margin-right:7px;vertical-align:-1px;}
+.line{display:flex;align-items:flex-end;gap:10px;margin-top:12px;font-size:12.5px;color:var(--ink-3);}
+.line span{white-space:nowrap;}
+.line i{flex:1;border-bottom:1px solid var(--ink-3);height:1px;}
+
+@media(max-width:700px){
+  .card{padding:20px 16px 32px;}
+  .cols{grid-template-columns:1fr;}
+}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;}
+
+/* One printed page. This card sits on the table during the call. */
+@page{size:letter;margin:.42in .5in;}
+@media print{
+  body{background:#fff;font-size:12px;}
+  .card{max-width:none;padding:0;}
+  .top h1{font-size:24px;}
+  .goal{font-size:11.5px;margin-top:7px;padding-top:7px;}
+  .flagbar{font-size:10px;padding:4px 8px;margin-top:8px;}
+  .lab{font-size:9.5px;margin:12px 0 5px;}
+  .opener{font-size:13.5px;padding:7px 11px;}
+  .facts li{padding:6px 10px 7px 6px;grid-template-columns:24px 1fr;}
+  .facts .n{font-size:17px;}
+  .facts .say{font-size:12.5px;}
+  .facts .sub{font-size:10.5px;margin-top:2px;}
+  ul.plain li{padding:4px 0;font-size:11.5px;}
+  .obj .they{font-size:10.5px;}
+  .obj .you{font-size:11.5px;}
+  .ask{padding:9px 12px 10px;}
+  .ask .main{font-size:13px;}
+  .ask .why{font-size:10.5px;margin-top:5px;}
+  .fallback{padding:7px 12px 8px;font-size:11.5px;}
+  .fallback i{font-size:9.5px;}
+  .after{padding:8px 12px 10px;}
+  .react{font-size:11.5px;}
+  .line{margin-top:13px;font-size:10.5px;}
+  .cols,.facts li,.after,.ask{break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <header>
+    <div class="top">
+      <h1>Call card</h1>
+      <div class="who" id="who"></div>
+    </div>
+    <p class="goal" id="goal"></p>
+    <div class="flagbar" id="flag" hidden></div>
+  </header>
+
+  <div class="lab">Open with</div>
+  <p class="opener" id="opener"></p>
+
+  <div class="lab">Say these, in this order</div>
+  <ol class="facts" id="facts"></ol>
+
+  <div class="cols">
+    <div>
+      <div class="lab">Ask them</div>
+      <ul class="plain" id="questions"></ul>
+
+      <div class="lab">If they say&hellip;</div>
+      <ul class="plain obj" id="objections"></ul>
+    </div>
+    <div>
+      <div class="lab">The ask</div>
+      <div class="ask" id="ask"></div>
+      <div class="fallback" id="fallback"></div>
+
+      <div class="lab">Don&rsquo;t</div>
+      <ul class="plain dont" id="dont"></ul>
+    </div>
+  </div>
+
+  <div class="lab">After the call &mdash; fill this in before you leave the parking lot</div>
+  <div class="after" id="after"></div>
+</div>
+
+<script>
+/* ==================================================================
+   EDIT EVERYTHING HERE. The card is drawn entirely from this object.
+   One call = one copy of this file with D replaced.
+
+   Build it last, from the audit report and the playbook's owner
+   questions. Rules that make it work:
+   - Facts go specific before abstract. Lead with one wrong fact the
+     owner can check on their phone while you talk. The appearance rate
+     comes later; on its own it is arguable.
+   - Every fact needs a proof the owner can see: a screenshot number,
+     a question number. No proof, no fact.
+   - Questions get them talking about their business, not about AI.
+   - The ask is small enough to say yes to in the room. The fallback
+     is smaller still, and still produces a before-and-after.
+   ================================================================== */
+const D = {
+
+  meta:{
+    business:"Northside Plumbing & Drain",
+    contact:"Owner",
+    date:"Tuesday, 10:00",
+    length:"20 min",
+    goal:"Show them what the assistants say about the business, and leave with a yes to fixing it and re-running.",
+    /* Set to false for a real call. */
+    sample:true,
+    sampleNote:"SAMPLE CARD. Built from the sample audit report. The business is fictional and every figure is illustrative."
+  },
+
+  opener:"I ran the questions your customers would ask an AI assistant, about your business specifically. Can I show you what came back? Five things, ten minutes.",
+
+  facts:[
+    { say:"One of the assistants tells people you’re closed on Saturdays.",
+      proof:"Screenshot 7",
+      why:"You’re open. That customer calls someone else." },
+    { say:"You do tankless installs. Not one of 150 answers knows that.",
+      proof:"Questions 6 and 14, every assistant",
+      why:"Nobody asks for a service they’ve never heard you offer." },
+    { say:"They quote your rating as 4.2. It’s 4.7.",
+      proof:"Question 8",
+      why:"You lose a side-by-side you’d actually win." },
+    { say:"Ask for the best plumber in Rochester and you come up about one time in five.",
+      proof:"29 of 150 answers",
+      why:"The other four times, a competitor is named instead." },
+    { say:"Competitor A was named 71 times. You were named 29.",
+      proof:"Full count in the report",
+      why:"Same city, same work. The difference is what they published." }
+  ],
+
+  questions:[
+    "Are your Saturday hours the same all year?",
+    "Roughly how many tankless jobs a month right now?",
+    "Who updates your Google listing and website today?"
+  ],
+
+  objections:[
+    { they:"“We get our work from Google and referrals.”",
+      you:"Good. This doesn’t replace either. Every fix here also corrects what Google shows." },
+    { they:"“Nobody uses AI to find a plumber.”",
+      you:"Not many yet, which is why it’s cheap to fix now. The wrong hours cost you on Google today either way." },
+    { they:"“Can’t I just fix it myself?”",
+      you:"Yes, and the list is yours either way. The hard part is keeping it consistent once it drifts." },
+    { they:"“What does it cost?”",
+      you:"Nothing this round. If the re-run moves, we talk about keeping it current." }
+  ],
+
+  ask:{
+    main:"Let me correct the hours, the rating sources and the full service list everywhere they appear. Then we re-run the same thirty questions in thirty days and compare.",
+    why:"No cost this round. You see the before and after side by side.",
+    fallback:"Can I re-run it in thirty days anyway and send you the comparison?"
+  },
+
+  dont:[
+    "Estimate lost revenue. Report what the assistants said.",
+    "Say AI is sending customers today. It barely is.",
+    "Quote anything you can’t show a screenshot for."
+  ],
+
+  after:{
+    reactions:["“Huh, interesting”","“How do I fix that?”","Not for us"],
+    lines:["What they said, word for word","Agreed next step","Follow-up date"]
+  }
+};
+
+/* ==================================================================
+   RENDER
+   ================================================================== */
+const $ = s => document.querySelector(s);
+
+$("#who").innerHTML =
+  `<b>${D.meta.business}</b> &middot; ${D.meta.contact} &middot; ${D.meta.date} &middot; ${D.meta.length}`;
+$("#goal").innerHTML = `<b>Goal.</b> ${D.meta.goal}`;
+if(D.meta.sample){
+  $("#flag").textContent = D.meta.sampleNote;
+  $("#flag").hidden = false;
+}
+
+$("#opener").textContent = `“${D.opener}”`;
+
+$("#facts").innerHTML = D.facts.map((f,i)=>`
+  <li>
+    <span class="n">${i+1}</span>
+    <div>
+      <p class="say">${f.say}</p>
+      <p class="sub"><span><i>Proof</i> ${f.proof}</span><span><i>Why it matters</i> ${f.why}</span></p>
+    </div>
+  </li>`).join("");
+
+$("#questions").innerHTML = D.questions.map(q=>`<li>${q}</li>`).join("");
+
+$("#objections").innerHTML = D.objections.map(o=>`
+  <li><span class="they">${o.they}</span><span class="you">${o.you}</span></li>`).join("");
+
+$("#ask").innerHTML = `<p class="main">${D.ask.main}</p><p class="why">${D.ask.why}</p>`;
+$("#fallback").innerHTML = `<i>If not now</i>${D.ask.fallback}`;
+
+$("#dont").innerHTML = D.dont.map(d=>`<li>${d}</li>`).join("");
+
+$("#after").innerHTML = `
+  <div class="react">${D.after.reactions.map(r=>`<span>${r}</span>`).join("")}</div>
+  ${D.after.lines.map(l=>`<div class="line"><span>${l}</span><i></i></div>`).join("")}`;
+</script>
+</body>
+</html>

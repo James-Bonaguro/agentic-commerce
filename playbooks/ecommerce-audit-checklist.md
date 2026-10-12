@@ -113,3 +113,10 @@ revenue matters today, because it doesn't yet. The honest pitch has two halves:
 ## 8. Call battle card (build last, from everything above)
 One page. Top 5 facts in the order to say them, 3-4 likely objections with a one-line
 response each, and the single concrete ask you want out of the call.
+
+Template: [`battle-card.html`](battle-card.html). Copy it, replace the `D` object, print
+it. It fits one letter page and ships with a labelled sample built from the sample audit
+report. Beyond the three parts above it adds an opener, three questions to get the owner
+talking, a smaller fallback ask, the honesty rules as a short "don't" list, and a box to
+record their reaction before you leave, which is the data point everything else
+depends on.
