@@ -220,6 +220,14 @@ td.q{color:var(--ink-3);font-size:14px;}
 }
 
 /* ============================================================
+   SIGNALS
+   ============================================================ */
+#moving td a{color:var(--ink-3);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px;}
+#moving td a:hover{color:var(--signal);}
+#moving .why{display:block;margin-top:4px;color:var(--ink-3);font-size:14px;}
+.tblwrap{overflow-x:auto;}
+
+/* ============================================================
    MONETIZATION
    ============================================================ */
 .path ul{margin:0;padding-left:18px;}
@@ -276,6 +284,7 @@ footer li b{color:var(--ink);font-weight:600;}
   <ul>
     <li><a href="#ladder">The behavior ladder</a></li>
     <li><a href="#path">What changes structurally</a></li>
+    <li><a href="#moving">What's moving</a></li>
     <li><a href="#today">Where we are today</a></li>
     <li><a href="#curve">The curve</a></li>
     <li><a href="#metrics">Core metrics</a></li>
@@ -335,6 +344,9 @@ footer li b{color:var(--ink);font-weight:600;}
       <div class="attr-line" id="pools-attr"></div>
     </div>
   </section>
+
+  <!-- ===================== MOVING ===================== -->
+  <section id="moving"></section>
 
   <!-- ===================== TODAY ===================== -->
   <section id="today">
@@ -527,6 +539,40 @@ const D = {
         "The agent holds the card and buys inside rules you set.",
         "Your agent buys from their agent. No person in the transaction."
       ] }
+  ],
+
+  /* ---- What's moving: dated, sourced, newest first ----------------
+     Add a signal by adding one entry. dir is "Opening" (letting
+     agents in), "Closing" (keeping them out) or "Regrouping".       */
+  signalsHead:{
+    lede:"The same fight keeps showing up in the news: who controls the checkout when an agent does the buying. Some platforms are opening the door on their own terms. Others are locking it. None of this means agents are buying much yet. It means the biggest companies in commerce are already positioning for when they do.",
+    note:"Dated and sourced. Newest first."
+  },
+  signals:[
+    { date:"Oct 2026", who:"Google", dir:"Opening",
+      what:"Launches Universal Cart in the US: one cart across Search and the Gemini app, with price and stock alerts and checkout through Google Pay at participating retailers.",
+      why:"Product data that is accurate and complete is what gets an item into that cart.",
+      src:"Google", url:"https://blog.google/products-and-platforms/products/shopping/universal-cart-launch/" },
+    { date:"Sep 2026", who:"Amazon", dir:"Closing",
+      what:"Blocks Meta's Muse assistant from shopping on Amazon, citing its Conditions of Use.",
+      why:"The largest store online still decides which agents get in.",
+      src:"CNBC", url:"https://www.cnbc.com/2026/09/23/metas-standoff-with-amazon-over-muse-comes-ahead-of-meta-connect.html" },
+    { date:"Aug 2026", who:"Amazon v. Perplexity", dir:"Opening",
+      what:"An appeals court reverses the March order that had blocked Perplexity's shopping agent, finding it is the user, not the AI company, who accesses Amazon. The case continues on other grounds.",
+      why:"The first court test of whether an agent may shop for you. Not settled yet.",
+      src:"Engadget", url:"https://www.engadget.com/2230471/" },
+    { date:"2026", who:"Shopify", dir:"Opening",
+      what:"Agentic Storefronts let Shopify stores sell inside ChatGPT, with Copilot, Google AI Mode and Gemini in early access. The purchase still completes on the merchant's own store.",
+      why:"Millions of small merchants get a route into AI chats without building anything.",
+      src:"Shopify", url:"https://www.shopify.com/news/agentic-commerce-momentum" },
+    { date:"Mar 2026", who:"OpenAI", dir:"Regrouping",
+      what:"Its first push into shopping inside ChatGPT stumbles, and the company regroups for a second attempt.",
+      why:"Even the leaders are still working out how this should feel to a buyer.",
+      src:"CNBC", url:"https://www.cnbc.com/2026/03/20/open-ai-agentic-shopping-etsy-shopify-walmart-amazon.html" },
+    { date:"Jan 2026", who:"eBay", dir:"Closing",
+      what:"Updates its User Agreement to ban \"buy-for-me\" agents and bots that place orders without human review, unless eBay has given permission.",
+      why:"Marketplaces want agents to arrive through deals they control, not on their own.",
+      src:"eMarketer", url:"https://www.emarketer.com/content/ebay-joins-amazon-tightening-control-over-ai-shopping-agents" }
   ],
 
   /* ---- Value pools ----------------------------------------------- */
@@ -730,6 +776,29 @@ $("#ladders").innerHTML = D.ladders.map(L=>`
       </div>`).join("")}</div>
     <div class="rungs-foot"></div>
   </div>`).join("");
+
+/* ---- What's moving ----------------------------------------------- */
+$("#moving").innerHTML = `
+  <div class="sec-head">
+    <h2>What's moving</h2>
+    <span class="note">${D.signalsHead.note}</span>
+  </div>
+  <p class="lede">${D.signalsHead.lede}</p>
+  <div class="tblwrap"><table>
+    <thead><tr>
+      <th style="width:11%">When</th>
+      <th style="width:16%">Who</th>
+      <th style="width:11%">Direction</th>
+      <th style="width:62%">What happened</th>
+    </tr></thead>
+    <tbody>${D.signals.map(x=>`
+      <tr>
+        <td class="q">${x.date}</td>
+        <td class="lab">${x.who}</td>
+        <td class="${x.dir==="Closing"?"fore":"q"}">${x.dir}</td>
+        <td>${x.what}<span class="why">${x.why} <a href="${x.url}" target="_blank" rel="noopener">${x.src}</a></span></td>
+      </tr>`).join("")}</tbody>
+  </table></div>`;
 
 /* ---- Pools ------------------------------------------------------- */
 $("#pools").innerHTML = D.pools.map(p=>`<li>${p}</li>`).join("");

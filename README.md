@@ -14,6 +14,8 @@ attributed on the page.
 - **Offline:** download `index.html` and open it in any browser. No build step, no
   dependencies, no network calls, so it works off a laptop with the wifi off.
 - **PDF:** open it and print. Print styles are maintained.
+- **What's moving:** a dated, sourced log of agentic-commerce news (`D.signals` in
+  `index.html`). Add a story by adding one entry, newest first, with its source link.
 
 ## Editing it
 
